@@ -20,8 +20,8 @@ Have you ever played a game and you always want to check the score but someone e
 
 ### Design
 
-![Design image](pitchDesign1.png)
-![Design image](pitchDesign2.png)
+![Design image](images/pitchDesign1.png)
+![Design image](images/pitchDesign2.png)
 
 ### Key features
 
@@ -61,7 +61,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [ ] **Links** - I did not complete this part of the deliverable.
 - [ ] **Text** - I did not complete this part of the deliverable.
 - [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
+- [x] **Images** - Generated a favicon using AI, and have a picture for the top of the friends page and the  
 - [ ] **Login placeholder** - I did not complete this part of the deliverable.
 - [ ] **DB data placeholder** - I did not complete this part of the deliverable.
 - [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
