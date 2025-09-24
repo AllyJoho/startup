@@ -17,4 +17,5 @@ Also I have no idea what's going on with AWS. They have my credit card so I have
 So I got behind in my work and now I'm worried about the commits spread out over multiple days. I'm going to do my best to show proper ownership but I'm a little overwhelmed because shool is just a lot sometimes.\
 I understand HTML itself really well so I'm not too worried about it, but I am really bad at doing things on time.\
 I pulled free icons from Chanut-is-Industries, which is a free to use platform. This consists of the image used in friends and games for the trophy.
-I did design the favicon myself with google drawing though.
+I did design the favicon myself with google drawing though. I know one of the commits said I used AI but I ended up making my own because I didn't like it.\
+I'm working on my deliverable and I feel like my placeholders are really obvious but I want to get a good grade.

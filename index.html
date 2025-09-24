@@ -9,10 +9,12 @@
   </head>
   <body>
     <header>
-      <h1>Scorekeep HTML</h1>
+      <h1>Scorekeep HTML Home</h1>
       <nav>
         <menu>
           <li><a href="index.html">Home</a></li>
+          <li><a href="htmlPages/friends.html">Friends</a></li>
+          <li><a href="htmlPages/game.html">Game</a></li>
         </menu>
       </nav>
       <hr />
@@ -44,20 +46,20 @@
         <div id="returning-user">
             <h1>Welcome Back!</h1>
             <p>Please enter your username and password to log in.</p>
-            <button>I am a new user</button><br><br>
+            <button>I am a new user</button><br/><br/>
             <form method="get" action="friends.html">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username"><br><br>
+                <input type="text" id="username" name="username"><br/><br/>
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password"><br><br>
+                <input type="password" id="password" name="password"><br/><br/>
                 <button type="submit">Log In</button>
             </form>
         </div>
         <!-- Logged In User view -->
         <div id="logged-in" style="display:none;">
             <h1>Welcome Back, Username Here!</h1>
-            <p>Friends: amount of friends here</p>
-            <p>Age: This is where we use the agify.io API and display our guess of the user's age for the lolz</p>
+            <p>Friends: !!! amount of friends here</p>
+            <p>Age: !!! This is where we use the agify.io API and display our guess of the user's age for the lolz</p>
         </div>
     </main>
 

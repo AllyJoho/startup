@@ -56,13 +56,13 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [x] **Images** - Generated a favicon using AI, and have a picture for the top of the friends page and the  
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - There are 3 different pages, the login and game page has a few different views planned.
+- [x] **Proper HTML element usage** - This website uses a lot of HTML, with text, headers, divs, and form information.
+- [x] **Links** - There are links in the navigation and the github.
+- [x] **Text** - There is descriptive text across the deliverable.
+- [x] **3rd party API placeholder** - It is [agify.io](https://agify.io/) and at the home page.
+- [x] **Images** - Created a favicon, and have a picture for the top of the friends page and the game page.
+- [x] **Login placeholder** - Login form is at the home page.
 - [ ] **DB data placeholder** - I did not complete this part of the deliverable.
 - [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
 

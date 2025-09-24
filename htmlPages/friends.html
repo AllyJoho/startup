@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friends</title>
+    <link rel="icon" href="images/favicon.png" />
+  </head>
+  <body>
+    <header>
+      <h1>Scorekeep HTML Friends</h1>
+        <img src="images/friends.png" alt="Friends">
+      <nav>
+        <menu>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="htmlPages/friends.html">Friends</a></li>
+          <li><a href="htmlPages/game.html">Game</a></li>
+        </menu>
+      </nav>
+      <hr />
+    </header>
+    <main>
+        <h1>Friends</h1>
+        <p>You have no friends yet. Start by adding some! If it's not working, please make sure you're logged in.</p>
+        <p>!!! Friend information will be here with DB data implementation.</p>
+        <br />
+        <p>Friend Requests: 0</p>
+        <p>!!! This is one of the places the websocket will be implemented for real-time updates for friend requests.</p>
+        <br />
+        <form action="friends.html">
+            <label for="friend-username">Add Friend by Username:</label>
+            <input type="text" id="friend-username" name="friend-username" />
+            <button type="submit">Send Friend Request</button>
+        </form>
+        <p>!!! DB data implementation will be used here for connecting to new friends.</p>
+    </main>
+
+    <footer>
+      <hr />
+      <span>This project is maintained by Allison Johanson</span>
+      <br />
+      <a href="https://github.com/AllyJoho/startup.git">GitHub</a>
+    </footer>
+  </body>
+</html>
