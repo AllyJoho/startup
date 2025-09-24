@@ -12,3 +12,6 @@ I don't know what Simon is but I'm not in the mood to delete it.
 ## Setup
 Setup is kinda easy. I'm sure time will get rid of this stress but I feel like I have too many repositories open.\
 Also I have no idea what's going on with AWS. They have my credit card so I have no choice but to trust them. I'm just going to trust and vibe.
+
+## HTML
+So I got behind in my work and now I'm worried about the commits spread out over multiple days. I'm going to do my best to show proper ownership but I'm a little overwhelmed because shool is just a lot sometimes.
