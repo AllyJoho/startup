@@ -8,46 +8,64 @@
     <link rel="icon" href="images/favicon.png" />
   </head>
   <body>
-    <!-- Use header, main, and footer elements to give semantic structure -->
     <header>
-      <h1>Scorekeep<sup>&reg;</sup></h1>
-
-      <!-- Navigation elements -->
+      <h1>Scorekeep HTML</h1>
       <nav>
-        <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
         <menu>
           <li><a href="index.html">Home</a></li>
-          <li><a href="play.html">Play</a></li>
-          <li><a href="scores.html">Scores</a></li>
-          <li><a href="about.html">About</a></li>
         </menu>
       </nav>
-
-      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
       <hr />
     </header>
-
     <main>
-      <h1>Welcome to Simon</h1>
-      <form method="get" action="play.html">
-        <div>
-          <span>@</span>
-          <input type="text" placeholder="your@email.com" />
+        <!-- New User view -->
+        <div id="new-user">
+            <h1>Hello New User!</h1>
+            <p>You don't have an account yet. Please enter your details below to create one.</p>
+            <button>I have an account</button><br><br>
+            <form method="get" action="friends.html">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name"><br><br>
+                <!-- When javascript and stuff is in effect there will be a checker that the username is available and
+                8-12 characters without whitespace. This will be used for future login and connecting with friends -->
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"><br><br>
+                <!-- Will also make sure the password is at least 8 characters and has at least 1 number -->
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password"><br><br>
+                <!-- Will make sure the confirm password matches the original password -->
+                <label for="confirm-password">Confirm password:</label>
+                <input type="password" id="confirm-password" name="confirm-password"><br><br>
+                <!-- Create Account button -->
+                <button type="submit">Create Account</button>
+            </form>
         </div>
-        <div>
-          <span>🔒</span>
-          <input type="password" placeholder="password" />
+        <!-- Returning User view -->
+        <div id="returning-user">
+            <h1>Welcome Back!</h1>
+            <p>Please enter your username and password to log in.</p>
+            <button>I am a new user</button><br><br>
+            <form method="get" action="friends.html">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password"><br><br>
+                <button type="submit">Log In</button>
+            </form>
         </div>
-        <button type="submit">Login</button>
-        <button type="submit">Create</button>
-      </form>
+        <!-- Logged In User view -->
+        <div id="logged-in" style="display:none;">
+            <h1>Welcome Back, Username Here!</h1>
+            <p>Friends: amount of friends here</p>
+            <p>Age: This is where we use the agify.io API and display our guess of the user's age for the lolz</p>
+        </div>
     </main>
 
     <footer>
       <hr />
-      <span class="text-reset">Author Name(s)</span>
+      <span>This project is maintained by Allison Johanson</span>
       <br />
-      <a href="https://github.com/webprogramming260/simon-html">GitHub</a>
+      <a href="https://github.com/AllyJoho/startup.git">GitHub</a>
     </footer>
   </body>
 </html>
