@@ -21,4 +21,5 @@ I did design the favicon myself with google drawing though. I know one of the co
 I'm working on my deliverable and I feel like my placeholders are really obvious but I want to get a good grade.
 
 ## CSS
-So this mark is the multiple days of commits because I am the creater of my own destiny
+So this mark is the multiple days of commits because I am the creater of my own destiny\
+Like the issue isn't that my computer is going to crash it's that I procrastinate.
