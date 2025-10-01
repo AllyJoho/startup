@@ -19,3 +19,6 @@ I understand HTML itself really well so I'm not too worried about it, but I am r
 I pulled free icons from Chanut-is-Industries, which is a free to use platform. This consists of the image used in friends and games for the trophy.
 I did design the favicon myself with google drawing though. I know one of the commits said I used AI but I ended up making my own because I didn't like it.\
 I'm working on my deliverable and I feel like my placeholders are really obvious but I want to get a good grade.
+
+## CSS
+So this mark is the multiple days of commits because I am the creater of my own destiny
