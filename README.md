@@ -70,11 +70,11 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
-- [ ] **Navigation elements** - I did not complete this part of the deliverable.
+- [x] **Header, footer, and main content body** - I ended up reusing a lot of classes so everything's in one file for now.
+- [s] **Navigation elements** - Bootstrap but it took literally forever I could not get it to work but it's there now and it's beautiful.
 - [x] **Responsive to window resizing** - It is responsive to window resizing, with things relatively centered and nice looking and the top of the application changing to icon veiw when it changes to a certain length. I made the application thin enough that it should be fine skinny but of course there's limits to everything.
 - [x] **Application elements** - I changed a lot but I am rediscovering my dislike of flex.
-- [ ] **Application text content** - I did not complete this part of the deliverable.
+- [x] **Application text content** - I had a font imported for dramatic effect for the logo but most things are in ariel for a coheisive feel.
 - [x] **Application images** - The images are now the icons on the navbar in skinny mode.
 
 ## 🚀 React part 1: Routing deliverable
