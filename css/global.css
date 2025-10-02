@@ -23,13 +23,6 @@ header {
     font-weight: 500;
 }
 
-main {
-    padding: 50px;
-    align-items: center;
-    justify-content: flex-start;
-    width: auto;
-}
-
 footer, footer a {
     flex: 0 50px;
     background: #208d2d;
@@ -40,6 +33,7 @@ footer, footer a {
     align-items: center;
     gap: 20px;
     text-decoration: none;
+    padding: 20px;
 }
 
 .nav-item {
