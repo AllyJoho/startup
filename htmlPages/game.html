@@ -8,23 +8,32 @@
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-      crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="../css/global.css">
   </head>
   <body>
     <header>
-      <h1>Scorekeep HTML Game</h1>
-      <img src="../images/trophy.png" alt="Trophy" width="100" />
-      <nav>
-        <menu>
-          <li><a href="../index.html">Home</a></li>
-          <li><a href="friends.html">Friends</a></li>
-          <li><a href="game.html">Game</a></li>
-          <li><a href="history.html">History</a></li>
-        </menu>
+      <nav class="navbar navbar-expand-lg" id="desktop-nav">
+        <div class="container-fluid">
+          <span class="navbar-head">Scorekeep</span>
+          <ul class="navbar-nav ms-auto flex-row">
+            <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="friends.html">Friends</a></li>
+            <li class="nav-item"><a class="nav-link" href="game.html">Game</a></li>
+            <li class="nav-item"><a class="nav-link" href="history.html">History</a></li>
+          </ul>
+        </div>
       </nav>
-      <hr />
+      <nav class="navbar navbar-expand-lg" id="mobile-nav">
+        <div class="container-fluid">
+          <ul class="navbar-nav ms-auto flex-row">
+            <li class="nav-item"><a class="nav-link" href="../index.html"><img src="../images/home.png" alt="Home" /></a></li>
+            <li class="nav-item"><a class="nav-link" href="friends.html"><img src="../images/friends.png" alt="Friends" /></a></li>
+            <li class="nav-item"><a class="nav-link" href="game.html"><img src="../images/trophy.png" alt="Trophy" /></a></li>
+            <li class="nav-item"><a class="nav-link" href="history.html"><img src="../images/history.png" alt="History" /></a></li>
+          </ul>
+        </div>
+      </nav>
     </header>
     <main>
         <!-- View if game not started, and no requests to join -->
