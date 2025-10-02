@@ -1,40 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+
 /* I do just like doing this initially I'm about to more actively put stuff together */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
+
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
+
 header {
     display: flex;
     width: 100%;
     position: relative;
-    background: pink;
+    background: #208d2d;
     font-weight: 500;
 }
+
+main {
+    padding: 50px;
+    align-items: center;
+    justify-content: flex-start;
+    width: auto;
+}
+
+footer, footer a {
+    flex: 0 50px;
+    background: #208d2d;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+}
+
 .nav-item {
     margin: 0 10px;
     font-size: larger;
 }
 
+.nav-link {
+    color: white;
+}
+
 .navbar-head {
-    color: black;
-    font-size: x-large;
+    color: white;
+    font-size: 60px;
+    line-height: 70px;
+    font-family: "Bangers";
+    font-weight: 300;
+    text-align: center;
+    margin: 3px 15px;
 }
 
 #mobile-nav {
     display: none;
-    padding: auto;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+#mobile-nav .navbar-nav {
+    justify-content: center;
+    width: 100%;
 }
 
 .nav-link img {
     width: 60px;
     height: 60px;
-    margin: 10px;
+    margin: 0 12px;
+    filter: invert(1) brightness(2);
 }
 
 @media (max-width: 600px) {
@@ -42,6 +84,9 @@ header {
         display: none;
     }
     #mobile-nav {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
     }
 }
