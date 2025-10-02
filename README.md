@@ -72,10 +72,10 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [ ] **Header, footer, and main content body** - I did not complete this part of the deliverable.
 - [ ] **Navigation elements** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing** - I did not complete this part of the deliverable.
-- [ ] **Application elements** - I did not complete this part of the deliverable.
+- [x] **Responsive to window resizing** - It is responsive to window resizing, with things relatively centered and nice looking and the top of the application changing to icon veiw when it changes to a certain length.
+- [x] **Application elements** - I changed a lot but I am rediscovering my dislike of flex.
 - [ ] **Application text content** - I did not complete this part of the deliverable.
-- [ ] **Application images** - I did not complete this part of the deliverable.
+- [x] **Application images** - The images are now the icons on the navbar in skinny mode.
 
 ## 🚀 React part 1: Routing deliverable
 
