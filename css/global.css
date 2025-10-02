@@ -23,6 +23,11 @@ header {
     font-weight: 500;
 }
 
+main {
+    flex-grow: 1;
+}
+
+
 footer, footer a {
     flex: 0 50px;
     background: #208d2d;
@@ -84,4 +89,35 @@ footer, footer a {
         justify-content: center;
         width: 100%;
     }
+}
+
+
+
+/* fun stuff */
+.views {
+    width: 600px;
+    margin: auto;
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+label {
+    width: 250px;
+    text-align: end;
+}
+
+input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 12px 0;
+    width: 250px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
 }
