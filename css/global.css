@@ -89,13 +89,17 @@ footer, footer a {
         justify-content: center;
         width: 100%;
     }
+    label {
+        width: 100% !important;
+        text-align: center !important;
+    }
 }
 
 
 
 /* fun stuff */
 .views {
-    width: 600px;
+    max-width: 600px;
     margin: auto;
     padding: 20px;
     justify-content: center;
@@ -131,4 +135,10 @@ input:focus {
 .friendRequests{
     color: #208d2d;
     font-weight: bold;
+}
+
+.rank {
+    font-size: large;
+    text-align: center;
+    list-style-position: inside;
 }
