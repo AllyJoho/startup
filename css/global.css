@@ -142,3 +142,17 @@ input:focus {
     text-align: center;
     list-style-position: inside;
 }
+
+.gameHistory{
+    margin: 20px;
+    padding: 15px;
+    background-color: antiquewhite;
+}
+
+.winner{
+    color: #208d2d;
+    font-size: 60px;
+    line-height: 70px;
+    font-family: "Bangers";
+    margin: 3px 15px;
+}
