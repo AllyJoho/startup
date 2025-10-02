@@ -36,19 +36,27 @@
       </nav>
     </header>
     <main>
+      <div class="views">
         <h1>Friends</h1>
         <p>You have no friends yet. Start by adding some! If it's not working, please make sure you're logged in.</p>
-        <p>!!! Friend information will be here with DB data implementation.</p>
+        <p>OR</p>
+        <p>You have __ friends. Add some more here!</p>
+        <ul class="friends">
+          <li>!!! Friend information will be here with DB data implementation.</li>
+          <li>Friends listed will be in a bullet point like this.</li>
+          <li>Todd</li>
+        </ul>
         <br />
-        <p>Friend Requests: 0</p>
+        <h3 class="friendRequests">Friend Requests: 0</h3>
         <p>!!! This is one of the places the websocket will be implemented for real-time updates for friend requests.</p>
         <br />
         <form action="friends.html">
             <label for="friend-username">Add Friend by Username:</label>
             <input type="text" id="friend-username" name="friend-username" />
-            <button type="submit">Send Friend Request</button>
+            <button type="submit" class="btn btn-primary">Send Friend Request</button>
         </form>
         <p>!!! DB data implementation will be used here for connecting to new friends.</p>
+      </div>
     </main>
 
     <footer>

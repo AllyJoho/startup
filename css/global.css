@@ -121,3 +121,14 @@ input:focus {
     border-color: #007bff;
     outline: none;
 }
+
+.friends {
+    font-size: large;
+    text-align: center;
+    list-style-position: inside;
+}
+
+.friendRequests{
+    color: #208d2d;
+    font-weight: bold;
+}
