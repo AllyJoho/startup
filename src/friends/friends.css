@@ -1,0 +1,59 @@
+/* fun stuff */
+.views {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+label {
+    width: 250px;
+    text-align: end;
+}
+
+input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 12px 0;
+    width: 250px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.friends {
+    font-size: large;
+    text-align: center;
+    list-style-position: inside;
+}
+
+.friendRequests{
+    color: #208d2d;
+    font-weight: bold;
+}
+
+.rank {
+    font-size: large;
+    text-align: center;
+    list-style-position: inside;
+}
+
+.gameHistory{
+    margin: 20px;
+    padding: 15px;
+    background-color: antiquewhite;
+}
+
+.winner{
+    color: #208d2d;
+    font-size: 60px;
+    line-height: 70px;
+    font-family: "Bangers";
+    margin: 3px 15px;
+}
