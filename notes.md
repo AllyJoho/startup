@@ -23,4 +23,5 @@ I'm working on my deliverable and I feel like my placeholders are really obvious
 ## CSS
 So this mark is the multiple days of commits because I am the creater of my own destiny\
 Like the issue isn't that my computer is going to crash it's that I procrastinate.\
-I will say my style is very simple but I did struggle.
+I will say my style is very simple but I did struggle.\
+Honestly the main thing I learned is that AI only slows you down I did not use a single thing it gave me.
