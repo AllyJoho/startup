@@ -1,0 +1,36 @@
+/* Has CSS that goes to all views */
+
+.views {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+label {
+    width: 250px;
+    text-align: end;
+}
+
+input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 12px 0;
+    width: 250px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    label {
+        width: 100% !important;
+        text-align: center !important;
+    }
+}

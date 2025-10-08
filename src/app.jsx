@@ -11,7 +11,37 @@ import { Friends } from './friends/friends';
 export default function App() {
   return (
     <BrowserRouter>
-      <div>
+      <div className="body">
+                {/* <header className="container-fluid">
+          <nav className="navbar fixed-top navbar-dark">
+            <div className="navbar-brand">
+              Simon<sup>&reg;</sup>
+            </div>
+            <menu className="navbar-nav">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="">
+                  Login
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="history">
+                  Play
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="game">
+                  Scores
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="friends">
+                  About
+                </NavLink>
+              </li>
+            </menu>
+          </nav>
+        </header> */}
+
         <header>
           <nav className="navbar navbar-expand-lg" id="desktop-nav">
             <div className="container-fluid">
@@ -27,10 +57,10 @@ export default function App() {
           <nav className="navbar navbar-expand-lg" id="mobile-nav">
             <div className="container-fluid">
               <ul className="navbar-nav ms-auto flex-row">
-                <li className="nav-item"><NavLink className="nav-link" to=''><img src="../images/home.png" alt="Home" /></NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='friends'><img src="../images/friends.png" alt="Friends" /></NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='game'><img src="../images/trophy.png" alt="Trophy" /></NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='history'><img src="../images/history.png" alt="History" /></NavLink></li>
+                <li className="nav-item"><NavLink className="nav-link" to=''><img src="home.png" alt="Home" /></NavLink></li>
+                <li className="nav-item"><NavLink className="nav-link" to='friends'><img src="friends.png" alt="Friends" /></NavLink></li>
+                <li className="nav-item"><NavLink className="nav-link" to='game'><img src="trophy.png" alt="Trophy" /></NavLink></li>
+                <li className="nav-item"><NavLink className="nav-link" to='history'><img src="history.png" alt="History" /></NavLink></li>
               </ul>
             </div>
           </nav>
@@ -45,10 +75,12 @@ export default function App() {
         </Routes>
 
         <footer>
-          <hr />
-          <span>This project is maintained by Allison Johanson</span>
-          <br />
-          <a href="https://github.com/AllyJoho/startup.git">GitHub</a>
+          <div className="container-fluid">
+            <span className="text-reset">This project is maintained by Allison Johanson</span>
+            <a className="text-reset" href="https://github.com/AllyJoho/startup.git">
+              (Github)
+            </a>
+          </div>
         </footer>
       </div>
     </BrowserRouter>

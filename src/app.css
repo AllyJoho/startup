@@ -1,12 +1,6 @@
+/* Edited so now this is just stuff to do with the header, footer, navigation, etc. */
 @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
 
-.body {
-  display: flex;
-  flex-direction: column;
-  min-width: 375px;
-}
-
-/* I do just like doing this initially I'm about to more actively put stuff together */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,26 +8,24 @@
     font-family: Arial, sans-serif;
 }
 
-body {
+.body {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-width: 375px;
 }
 
 header {
-    display: flex;
+    flex: 0 92px;
     width: 100%;
-    position: relative;
     background: #208d2d;
     font-weight: 500;
 }
 
 main {
-    flex-grow: 1;
+    flex: 1 calc(100vh - 154px);
 }
 
-
-footer, footer a {
+footer {
     flex: 0 50px;
     background: #208d2d;
     color: white;
@@ -44,6 +36,11 @@ footer, footer a {
     gap: 20px;
     text-decoration: none;
     padding: 20px;
+
+}
+
+footer a {
+    float: right;
 }
 
 .nav-item {
@@ -94,70 +91,16 @@ footer, footer a {
         justify-content: center;
         width: 100%;
     }
-    label {
-        width: 100% !important;
-        text-align: center !important;
-    }
 }
 
-
-
-/* fun stuff */
-.views {
-    max-width: 600px;
-    margin: auto;
-    padding: 20px;
-    justify-content: center;
-    text-align: center;
-}
-
-label {
-    width: 250px;
-    text-align: end;
-}
-
-input {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin: 12px 0;
-    width: 250px;
-    box-sizing: border-box;
-    transition: border-color 0.2s;
-}
-
-input:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-.friends {
-    font-size: large;
-    text-align: center;
-    list-style-position: inside;
-}
-
-.friendRequests{
-    color: #208d2d;
-    font-weight: bold;
-}
-
-.rank {
-    font-size: large;
-    text-align: center;
-    list-style-position: inside;
-}
-
-.gameHistory{
-    margin: 20px;
-    padding: 15px;
-    background-color: antiquewhite;
-}
-
-.winner{
-    color: #208d2d;
-    font-size: 60px;
-    line-height: 70px;
-    font-family: "Bangers";
-    margin: 3px 15px;
+@media (max-height: 600px) {
+  header {
+    display: none;
+  }
+  footer {
+    display: none;
+  }
+  main {
+    flex: 1 100vh;
+  }
 }
