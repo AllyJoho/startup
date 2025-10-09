@@ -12,36 +12,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="body">
-                {/* <header className="container-fluid">
-          <nav className="navbar fixed-top navbar-dark">
-            <div className="navbar-brand">
-              Simon<sup>&reg;</sup>
-            </div>
-            <menu className="navbar-nav">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="">
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="history">
-                  Play
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="game">
-                  Scores
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="friends">
-                  About
-                </NavLink>
-              </li>
-            </menu>
-          </nav>
-        </header> */}
-
         <header>
           <nav className="navbar navbar-expand-lg" id="desktop-nav">
             <div className="container-fluid">
