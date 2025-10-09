@@ -16,14 +16,14 @@ export function Game() {
         <div id="create-game">
             <h1>Create Game</h1>
             <form action="">
-                <label for="game-name">Game Name:</label>
+                <label htmlFor="game-name">Game Name:</label>
                 <input type="text" id="game-name" name="game-name" required />
                 <div className="btn-group">
-                  <input type="radio" className="btn-check" name="btnradio" id="low" autocomplete="off" checked/>
-                  <label className="btn btn-outline-primary" for="low">Lowest Score Wins</label>
+                  <input type="radio" className="btn-check" name="btnradio" id="low" autoComplete="off" defaultChecked />
+                  <label className="btn btn-outline-primary" htmlFor="low">Lowest Score Wins</label>
 
-                  <input type="radio" className="btn-check" name="btnradio" id="high" autocomplete="off"/>
-                  <label className="btn btn-outline-primary" for="high">Highest Score Wins</label>
+                  <input type="radio" className="btn-check" name="btnradio" id="high" autoComplete="off"/>
+                  <label className="btn btn-outline-primary" htmlFor="high">Highest Score Wins</label>
                 </div>
                 <p>!!! DB data implementation will be used here for adding your friends to the game.</p>
                 <button type="submit" className="btn btn-success">Create Game</button>
@@ -33,7 +33,7 @@ export function Game() {
         {/* <!-- View if game started --> */}
         <div id="current-game">
             <h1>Game Name Here</h1>
-            <p>For this game <span style="text-decoration: underline;">highest score wins</span></p>
+            <p>For this game <span style={{ textDecoration: 'underline' }}>highest score wins</span></p>
             <p>Players:</p>
             <ol className="rank">
                 <li>Player 1: Score Here</li>
@@ -42,7 +42,7 @@ export function Game() {
                 <li>Player 4: Score Here</li>
             </ol>
             <form action="">
-                <label for="player-score">Enter Your Score:</label>
+                <label htmlFor="player-score">Enter Your Score:</label>
                 <input type="number" id="player-score" name="player-score" required />
                 <button type="submit" className="btn btn-danger">Subtract Score</button>
                 <button type="submit" className="btn btn-success">Add Score</button>
