@@ -2,11 +2,12 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Welcome } from './welcome/welcome';
 import { History } from './history/history';
 import { Game } from './game/game';
 import { Friends } from './friends/friends';
+import { NavigateLink } from './components/navlink';
 
 export default function App() {
   return (
@@ -17,20 +18,20 @@ export default function App() {
             <div className="container-fluid">
               <span className="navbar-head">Scorekeep</span>
               <ul className="navbar-nav ms-auto flex-row">
-                <li className="nav-item"><NavLink className="nav-link" to=''>Home</NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='friends'>Friends</NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='game'>Game</NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='history'>History</NavLink></li>
+                <NavigateLink title=''>Home</NavigateLink>
+                <NavigateLink title='friends'>Friends</NavigateLink>
+                <NavigateLink title='game'>Game</NavigateLink>
+                <NavigateLink title='history'>History</NavigateLink>
               </ul>
             </div>
           </nav>
           <nav className="navbar navbar-expand-lg" id="mobile-nav">
             <div className="container-fluid">
               <ul className="navbar-nav ms-auto flex-row">
-                <li className="nav-item"><NavLink className="nav-link" to=''><img src="home.png" alt="Home" /></NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='friends'><img src="friends.png" alt="Friends" /></NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='game'><img src="trophy.png" alt="Trophy" /></NavLink></li>
-                <li className="nav-item"><NavLink className="nav-link" to='history'><img src="history.png" alt="History" /></NavLink></li>
+                <NavigateLink title=''><img src="home.png" alt="Home" /></NavigateLink>
+                <NavigateLink title='friends'><img src="friends.png" alt="Friends" /></NavigateLink>
+                <NavigateLink title='game'><img src="trophy.png" alt="Trophy" /></NavigateLink>
+                <NavigateLink title='history'><img src="history.png" alt="History" /></NavigateLink>
               </ul>
             </div>
           </nav>
