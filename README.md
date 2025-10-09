@@ -20,8 +20,8 @@ Have you ever played a game and you always want to check the score but someone e
 
 ### Design
 
-![Design image](images/pitchDesign1.png)
-![Design image](images/pitchDesign2.png)
+![Design image](public/pitchDesign1.png)
+![Design image](public/pitchDesign2.png)
 
 ### Key features
 
@@ -81,9 +81,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [x] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [x] **Components** - I did not complete this part of the deliverable.
-- [x] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - Following the instructions was simple enough, I struggled a bit because I did most of this without internet.
+- [x] **Components** - I had all of the pages and a navigation link turned into a compnent. Wasn't sure if we were supposed to add non-page components yet but did anyways.
+- [x] **Router** - The router was super easy to install.
 
 ## 🚀 React part 2: Reactivity deliverable
 
