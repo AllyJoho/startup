@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './friends.css';
 
 export function FriendRequestsView({ currentUser }) {
+    const [requests, setRequests] = useState(currentUser.friendRequests);
     let usersString = localStorage.getItem('userList');
     let users = usersString ? JSON.parse(usersString) : [];
 
@@ -29,6 +30,7 @@ export function FriendRequestsView({ currentUser }) {
         
         saveUsers(users);
         saveCurrentUser(currentUserObj);
+        setRequests(currentUserObj.friendRequests);
     };
 
     const declineFriendRequest = (request) => {
@@ -39,11 +41,12 @@ export function FriendRequestsView({ currentUser }) {
         
         saveUsers(users);
         saveCurrentUser(currentUserObj);
+        setRequests(currentUserObj.friendRequests);
     };
     return (
         <div>
-            <h3 className="friendRequests">Friend Requests: {currentUser.friendRequests.length}</h3>
-            {currentUser.friendRequests.map((request, index) => (
+            <h3 className="friendRequests">Friend Requests: {requests.length}</h3>
+            {requests.map((request, index) => (
                 <div key={index} className="request">
                     <span>{request.sender} wants to be your friend!</span>
                     <button onClick={() => acceptFriendRequest(request)} className="btn btn-success">Accept</button>

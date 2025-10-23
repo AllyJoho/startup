@@ -8,12 +8,24 @@ import { History } from './history/history';
 import { Game } from './game/game';
 import { Friends } from './friends/friends';
 import { NavigateLink } from './components/navlink';
+import { Users } from './welcome/userObj';
 
 export default function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [loggedin, setLoggedin] = useState(false);
 
     useEffect(() => {
+        // Initialize dummy users if none exist
+        const userList = localStorage.getItem('userList');
+        if (!userList || JSON.parse(userList).length === 0) {
+            const dummyUsers = [
+                new Users('Jim', 'a', 'a'),
+                new Users('Joe', 'b', 'b'),
+                new Users('Job', 'c', 'c')
+            ];
+            localStorage.setItem('userList', JSON.stringify(dummyUsers));
+        }
+
         // Check if user is already logged in on app mount
         const storedUser = localStorage.getItem('currentUser');
         if (storedUser) {
