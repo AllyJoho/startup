@@ -22,9 +22,7 @@ export function AddFriendView({ currentUser, save }) {
         }
         const recipient = users.find((u) => u.username === username);
         if (!recipient) {
-            setMessage(
-                `User not found. Existing users: ${users.map((u) => u.username).join(', ')}`
-            );
+            setMessage("User not found.");
             return;
         }
         const alreadyRequested = (recipient.friendRequests || []).some(
@@ -35,7 +33,7 @@ export function AddFriendView({ currentUser, save }) {
             return;
         }
 
-        const newRequest = new FriendRequest(currentUser.username, recipient.username);
+        const newRequest = new FriendRequest(currentUser.name, currentUser.username, recipient.username);
         if (!recipient.friendRequests) recipient.friendRequests = [];
         recipient.friendRequests.push(newRequest);
 

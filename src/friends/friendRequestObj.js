@@ -1,5 +1,6 @@
 export class FriendRequest {
-    constructor(sender, recipient) {
+    constructor(senderName, sender, recipient) {
+        this.senderName = senderName;
         this.sender = sender;
         this.recipient = recipient;
     }
