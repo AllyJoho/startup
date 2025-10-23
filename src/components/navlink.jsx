@@ -3,7 +3,6 @@ import React from 'react';
 import '../app.css';
 import { NavLink } from 'react-router-dom';
 
-
 export function NavigateLink({ title, children }) {
     const to = title && title.length ? `/${title}` : '/';
     return (

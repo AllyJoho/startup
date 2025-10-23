@@ -10,48 +10,48 @@ import './game.css';
 // }
 
 export function Game({ currentUser }) {
-  const [currentGameId, setCurrentGameId] = useState(null);
-  const [view, setView] = useState('no-game'); // 'no-game', 'create', 'active'
+    const [currentGameId, setCurrentGameId] = useState(null);
+    const [view, setView] = useState('no-game'); // 'no-game', 'create', 'active'
 
-  const handleCreateGame = (game) => {
-    setView('create');
-  };
+    const handleCreateGame = (game) => {
+        setView('create');
+    };
 
-  const handleGameCreated = (game) => {
-    setView('active');
-  };
+    const handleGameCreated = (game) => {
+        setView('active');
+    };
 
-  const handleGameEnd = () => {
-    setView('no-game');
-  };
+    const handleGameEnd = () => {
+        setView('no-game');
+    };
 
-  if (!currentUser) {
+    if (!currentUser) {
+        return (
+            <main className="views">
+                <NoGame onCreateGame={handleCreateGame} valid={false} currentUser={null} />
+            </main>
+        );
+    }
+
     return (
-      <main className="views">
-        <NoGame onCreateGame={handleCreateGame} valid={false} currentUser={null} />
-      </main>
+        <main className="views">
+            {view === 'no-game' && (
+                <NoGame onCreateGame={handleCreateGame} valid={true} currentUser={currentUser} />
+            )}
+            {view === 'create' && (
+                <CreateGame
+                    currentUser={currentUser}
+                    onGameCreated={handleGameCreated}
+                    onCancel={() => setView('no-game')}
+                />
+            )}
+            {view === 'active' && currentGameId && (
+                <ActiveGame
+                    currentUser={currentUser}
+                    gameId={currentGameId}
+                    onGameEnd={handleGameEnd}
+                />
+            )}
+        </main>
     );
-  }
-
-  return (
-    <main className="views">
-      {view === 'no-game' && (
-        <NoGame onCreateGame={handleCreateGame} valid={true} currentUser={currentUser} />
-      )}
-      {view === 'create' && (
-        <CreateGame 
-          currentUser={currentUser}
-          onGameCreated={handleGameCreated}
-          onCancel={() => setView('no-game')}
-        />
-      )}
-      {view === 'active' && currentGameId && (
-        <ActiveGame 
-          currentUser={currentUser}
-          gameId={currentGameId}
-          onGameEnd={handleGameEnd}
-        />
-      )}
-    </main>
-  );
 }

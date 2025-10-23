@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Users } from './userObj';
-import "./welcome.css"
+import './welcome.css';
 
 function getUserList() {
     const list = localStorage.getItem('userList');
@@ -40,7 +40,7 @@ export default function Unauthenticated({ onLogin }) {
             setError('Passwords do not match');
             return;
         }
-        if (userList.find(u => u.username === username)) {
+        if (userList.find((u) => u.username === username)) {
             setError('Username already taken');
             return;
         }
@@ -67,7 +67,7 @@ export default function Unauthenticated({ onLogin }) {
         }
 
         let userList = getUserList();
-        let user = userList.find(u => u.username === username && u.password === password);
+        let user = userList.find((u) => u.username === username && u.password === password);
 
         if (!user) {
             setError('Invalid username or password');
@@ -104,7 +104,7 @@ export default function Unauthenticated({ onLogin }) {
                             id="name"
                             name="name"
                             value={name}
-                            onChange={e => setName(e.target.value)}
+                            onChange={(e) => setName(e.target.value)}
                         />
                     </div>
                     <div>
@@ -114,7 +114,7 @@ export default function Unauthenticated({ onLogin }) {
                             id="username"
                             name="username"
                             value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
                     <div>
@@ -124,7 +124,7 @@ export default function Unauthenticated({ onLogin }) {
                             id="password"
                             name="password"
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
                     <div>
@@ -134,13 +134,13 @@ export default function Unauthenticated({ onLogin }) {
                             id="confirm-password"
                             name="confirm-password"
                             value={confirmPassword}
-                            onChange={e => setConfirmPassword(e.target.value)}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
                     <button type="submit" className="btn btn-success">
                         Create Account
                     </button>
-                    {error && <div className='error'>{error}</div>}
+                    {error && <div className="error">{error}</div>}
                 </form>
             </div>
         );
@@ -161,7 +161,7 @@ export default function Unauthenticated({ onLogin }) {
                             id="username"
                             name="username"
                             value={username}
-                            onChange={e => setUsername(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
                     <div>
@@ -171,13 +171,13 @@ export default function Unauthenticated({ onLogin }) {
                             id="password"
                             name="password"
                             value={password}
-                            onChange={e => setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
                     <button type="submit" className="btn btn-success">
                         Log In
                     </button>
-                    {error && <div style={{color: 'red', marginTop: '10px'}}>{error}</div>}
+                    {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
                 </form>
             </div>
         );

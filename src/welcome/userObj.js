@@ -1,6 +1,6 @@
 function getAge(name) {
-  // This will be replaced with a 3rd party service call
-  return Math.floor(Math.random() * 30) + 15 + name.length;
+    // This will be replaced with a 3rd party service call
+    return Math.floor(Math.random() * 30) + 15 + name.length;
 }
 
 export class Users {

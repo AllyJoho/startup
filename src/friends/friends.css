@@ -4,7 +4,11 @@
     list-style-position: inside;
 }
 
-.friendRequests{
+.friendRequests {
     color: #208d2d;
     font-weight: bold;
+}
+
+.request {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
