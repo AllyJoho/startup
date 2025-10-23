@@ -20,6 +20,7 @@ export function History() {
             </ol>
         </div>
       </div>
+      <button onClick={() =>{localStorage.clear();}}>Button of mystery</button>
     </main>
   );
 }

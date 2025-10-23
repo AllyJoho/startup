@@ -10,6 +10,7 @@ export class Users {
         this.password = password;
         this.games = [];
         this.friends = [];
+        this.friendRequests = [];
         this.age = getAge(name);
     }
 }

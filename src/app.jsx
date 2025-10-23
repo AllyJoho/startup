@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { Welcome } from './welcome/welcome';
 import { History } from './history/history';
 import { Game } from './game/game';
@@ -11,6 +11,7 @@ import { NavigateLink } from './components/navlink';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [loggedin, setLoggedin] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in on app mount
@@ -28,11 +29,13 @@ export default function App() {
   const handleLogin = (user) => {
     localStorage.setItem('currentUser', JSON.stringify(user));
     setCurrentUser(user);
+    setLoggedin(true);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
     setCurrentUser(null);
+    setLoggedin(false);
   };
 
   return (
@@ -63,11 +66,44 @@ export default function App() {
         </header>
 
         <Routes>
-          <Route path='/' element={<Welcome currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} />} exact />
-          <Route path='/history' element={<History currentUser={currentUser} />} />
-          <Route path='/game' element={<Game currentUser={currentUser} />} />
-          <Route path='/friends' element={<Friends currentUser={currentUser} />} />
-          <Route path='*' element={<NotFound />} />
+          <Route
+            path="/"
+            element={
+              <Welcome currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} />
+            }
+            exact
+          />
+          <Route
+            path="/history"
+            element={
+              loggedin || currentUser ? (
+                <History currentUser={currentUser} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/game"
+            element={
+              loggedin || currentUser ? (
+                <Game currentUser={currentUser} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/friends"
+            element={
+              loggedin || currentUser ? (
+                <Friends currentUser={currentUser} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
 
         <footer>
