@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
@@ -10,6 +10,31 @@ import { Friends } from './friends/friends';
 import { NavigateLink } from './components/navlink';
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    // Check if user is already logged in on app mount
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        setCurrentUser(user);
+      } catch (e) {
+        console.error('Failed to parse stored user:', e);
+      }
+    }
+  }, []);
+
+  const handleLogin = (user) => {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    setCurrentUser(user);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    setCurrentUser(null);
+  };
+
   return (
     <BrowserRouter>
       <div className="body">
@@ -38,10 +63,10 @@ export default function App() {
         </header>
 
         <Routes>
-          <Route path='/' element={<Welcome />} exact />
-          <Route path='/history' element={<History />} />
-          <Route path='/game' element={<Game />} />
-          <Route path='/friends' element={<Friends />} />
+          <Route path='/' element={<Welcome currentUser={currentUser} onLogin={handleLogin} onLogout={handleLogout} />} exact />
+          <Route path='/history' element={<History currentUser={currentUser} />} />
+          <Route path='/game' element={<Game currentUser={currentUser} />} />
+          <Route path='/friends' element={<Friends currentUser={currentUser} />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
 
