@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NoGame } from './noGame';
 import { CreateGame } from './createGame';
 import { ActiveGame } from './activeGame';
@@ -27,14 +27,16 @@ export function Game({ currentUser }) {
 
   if (!currentUser) {
     return (
-      <NoGame onCreateGame={handleCreateGame} vaid={false} />
+      <main className="views">
+        <NoGame onCreateGame={handleCreateGame} valid={false} currentUser={null} />
+      </main>
     );
   }
 
   return (
     <main className="views">
       {view === 'no-game' && (
-        <NoGame onCreateGame={handleCreateGame} vaid={true} />
+        <NoGame onCreateGame={handleCreateGame} valid={true} currentUser={currentUser} />
       )}
       {view === 'create' && (
         <CreateGame 
