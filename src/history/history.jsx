@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './history.css';
 
-export function History() {
+export function History({ currentUser }) {
+    const [finishedGames, setFinishedGames] = useState([]);
+    
+    useEffect(() => {
+        const gamesString = localStorage.getItem('gameList');
+        const allGames = gamesString ? JSON.parse(gamesString) : [];
+        
+        const userFinishedGames = allGames.filter(g => 
+            g.status === 'finished' && 
+            g.players.some(p => p.username === currentUser.username)
+        );
+        
+        setFinishedGames(userFinishedGames);
+    }, [currentUser.username]);
+    
     return (
         <main className="views">
             <div>
@@ -10,25 +24,46 @@ export function History() {
                     Here are your past games. Add more by playing some! If it's not working, please
                     make sure you're logged in.
                 </p>
-                <p>!!! Game information will be here with DB data implementation.</p>
-                <div className="gameHistory">
-                    <h3>Game Name Here</h3>
-                    <span className="winner">Ted WON!</span>
-                    <h5>You played with:</h5>
-                    <ol className="rank">
-                        <li>Ted: 10</li>
-                        <li>Abbie(You): 8</li>
-                        <li>Josh: 5</li>
-                        <li>Tris: 3</li>
-                    </ol>
-                </div>
+                
+                {finishedGames.length === 0 ? (
+                    <p>No finished games yet. Play some games to see your history!</p>
+                ) : (
+                    finishedGames.map(game => {
+                        const sortedPlayers = [...game.players].sort((a, b) => {
+                            if (game.scoreType === 'low') {
+                                return a.score - b.score;
+                            } else {
+                                return b.score - a.score;
+                            }
+                        });
+                        
+                        const winner = sortedPlayers[0];
+                        
+                        return (
+                            <div key={game.id} className="gameHistory">
+                                <h3>{game.name}</h3>
+                                <span className="winner">{winner.name} WON!</span>
+                                <h5>You played with:</h5>
+                                <ol className="rank">
+                                    {sortedPlayers.map(player => (
+                                        <li key={player.username}>
+                                            {player.name}: {player.score}
+                                            {player.username === currentUser.username && ' (You)'}
+                                        </li>
+                                    ))}
+                                </ol>
+                            </div>
+                        );
+                    })
+                )}
             </div>
             <button
                 onClick={() => {
                     localStorage.clear();
+                    window.location.reload();
                 }}
             >
-                Button of mystery
+                Clear All Data for testing purposes
             </button>
         </main>
     );
