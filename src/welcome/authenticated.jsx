@@ -17,6 +17,7 @@ export function Authenticated({ currentUser, onLogout }) {
                 <br />
                 {currentUser.name || currentUser.username}!
             </h1>
+            <p>Username: {currentUser.username}</p>
             <p>Friends: {friendsCount}</p>
             <p>Age: {currentUser.age || 'N/A'}</p>
             <p>Games Played: {gamesPlayed}</p>

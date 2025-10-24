@@ -3,7 +3,7 @@ import './friends.css';
 
 import { FriendRequest } from './friendRequestObj';
 
-export function AddFriendView({ currentUser, save }) {
+export function AddFriendView({ currentUser, users, saveUsers, saveCurrentUser }) {
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
 
@@ -14,8 +14,6 @@ export function AddFriendView({ currentUser, save }) {
             setMessage('Please enter a username.');
             return;
         }
-        let usersString = localStorage.getItem('userList');
-        let users = JSON.parse(usersString);
         if (username === currentUser.username) {
             setMessage('You cannot add yourself.');
             return;
@@ -38,10 +36,10 @@ export function AddFriendView({ currentUser, save }) {
         recipient.friendRequests.push(newRequest);
 
         const updatedUsers = users.map((u) => (u.username === recipient.username ? recipient : u));
-        localStorage.setItem('userList', JSON.stringify(updatedUsers));
+        saveUsers(updatedUsers);
         setMessage('Friend request sent!');
         setUsername('');
-        if (save) save(currentUser);
+        saveCurrentUser(currentUser);
     }
 
     return (
