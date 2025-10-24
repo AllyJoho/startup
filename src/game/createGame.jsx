@@ -48,7 +48,7 @@ export function CreateGame({
         ];
 
         const newGame = new Game(gameId, gameName, scoreType, currentUser.username, players);
-        newGame.status = 'active';
+        newGame.status = 'pending';
 
         const updatedGames = [...games, newGame];
         saveGames(updatedGames);

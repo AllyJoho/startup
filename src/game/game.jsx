@@ -9,19 +9,19 @@ export function Game({ currentUser }) {
         const gamesString = localStorage.getItem('gameList');
         return gamesString ? JSON.parse(gamesString) : [];
     });
-    
+
     const [users, setUsers] = useState(() => {
         const usersString = localStorage.getItem('userList');
         return usersString ? JSON.parse(usersString) : [];
     });
-    
+
     const [currentGameId, setCurrentGameId] = useState(null);
     const [view, setView] = useState('no-game');
 
     useEffect(() => {
-        const activeGame = games.find(g => 
-            g.status === 'active' &&
-            g.players.find(p => p.username === currentUser.username)
+        const activeGame = games.find(
+            (g) =>
+                g.status === 'active' && g.players.find((p) => p.username === currentUser.username)
         );
         if (activeGame) {
             setCurrentGameId(activeGame.id);
@@ -33,12 +33,12 @@ export function Game({ currentUser }) {
         localStorage.setItem('gameList', JSON.stringify(updatedGames));
         setGames(updatedGames);
     };
-    
+
     const saveUsers = (updatedUsers) => {
         localStorage.setItem('userList', JSON.stringify(updatedUsers));
         setUsers(updatedUsers);
     };
-    
+
     const saveCurrentUser = (updatedUser) => {
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
     };
