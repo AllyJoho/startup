@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function CreateGame(props) {
+export function CreateGame({ currentUser }) {
     return (
         <div id="create-game">
             <h1>Create Game</h1>

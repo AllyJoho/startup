@@ -20,7 +20,7 @@ export function AddFriendView({ currentUser, users, saveUsers, saveCurrentUser }
         }
         const recipient = users.find((u) => u.username === username);
         if (!recipient) {
-            setMessage("User not found.");
+            setMessage('User not found.');
             return;
         }
         const alreadyRequested = (recipient.friendRequests || []).some(
@@ -31,7 +31,11 @@ export function AddFriendView({ currentUser, users, saveUsers, saveCurrentUser }
             return;
         }
 
-        const newRequest = new FriendRequest(currentUser.name, currentUser.username, recipient.username);
+        const newRequest = new FriendRequest(
+            currentUser.name,
+            currentUser.username,
+            recipient.username
+        );
         if (!recipient.friendRequests) recipient.friendRequests = [];
         recipient.friendRequests.push(newRequest);
 

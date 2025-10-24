@@ -22,23 +22,21 @@ export function Friends({ currentUser }) {
         const timer = setTimeout(() => {
             const usersString = localStorage.getItem('userList');
             const currentUsers = usersString ? JSON.parse(usersString) : [];
-            
-            const currentUserObj = currentUsers.find(u => u.username === currentUser.username);
+
+            const currentUserObj = currentUsers.find((u) => u.username === currentUser.username);
             if (!currentUserObj) return;
 
             const senders = ['a', 'b'];
             let updated = false;
 
-            senders.forEach(senderUsername => {
-                const senderUser = currentUsers.find(u => u.username === senderUsername);
+            senders.forEach((senderUsername) => {
+                const senderUser = currentUsers.find((u) => u.username === senderUsername);
                 if (!senderUser) return;
                 if (currentUserObj.username === senderUsername) return;
-                if ((currentUserObj.friends || []).some(f => 
-                    f.username === senderUsername
-                )) return;
-                if ((currentUserObj.friendRequests || []).some(
-                    r => r.sender === senderUsername
-                )) return;
+                if ((currentUserObj.friends || []).some((f) => f.username === senderUsername))
+                    return;
+                if ((currentUserObj.friendRequests || []).some((r) => r.sender === senderUsername))
+                    return;
                 currentUserObj.friendRequests.push(
                     new FriendRequest(senderUser.name, senderUsername, currentUser.username)
                 );
@@ -46,7 +44,7 @@ export function Friends({ currentUser }) {
             });
 
             if (updated) {
-                const updatedUsers = currentUsers.map(u =>
+                const updatedUsers = currentUsers.map((u) =>
                     u.username === currentUser.username ? currentUserObj : u
                 );
                 localStorage.setItem('userList', JSON.stringify(updatedUsers));
@@ -56,7 +54,7 @@ export function Friends({ currentUser }) {
 
         return () => clearTimeout(timer);
     }, [currentUser.username]);
-    
+
     return (
         <main className="views">
             <div>
@@ -68,8 +66,8 @@ export function Friends({ currentUser }) {
                     saveUsers={saveUsers}
                     saveCurrentUser={saveCurrentUser}
                 />
-                <AddFriendView 
-                    currentUser={currentUser} 
+                <AddFriendView
+                    currentUser={currentUser}
                     users={users}
                     saveUsers={saveUsers}
                     saveCurrentUser={saveCurrentUser}

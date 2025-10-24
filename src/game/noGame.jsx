@@ -9,10 +9,6 @@ export function NoGame(props) {
                 adding you to your game you can wait here.
             </p>
             <p>
-                If something doesn't seem right, please refresh the page or make sure you're logged
-                in.
-            </p>
-            <p>
                 !!! This is where the websocket will be implemented for real-time updates for game
                 invitations.
             </p>

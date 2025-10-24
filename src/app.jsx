@@ -21,7 +21,7 @@ export default function App() {
             const dummyUsers = [
                 new Users('Jim', 'a', 'a'),
                 new Users('Joe', 'b', 'b'),
-                new Users('Job', 'c', 'c')
+                new Users('Job', 'c', 'c'),
             ];
             localStorage.setItem('userList', JSON.stringify(dummyUsers));
         }
