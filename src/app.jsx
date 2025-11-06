@@ -45,10 +45,17 @@ export default function App() {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('currentUser');
-        setCurrentUser(null);
-        setLoggedin(false);
-    };
+    fetch(`/api/auth/logout`, {
+      method: 'delete',
+    })
+      .catch(() => {
+        // Logout failed. Assuming offline
+      })
+      .finally(() => {
+        localStorage.removeItem('userName');
+        props.onLogout();
+      });
+        };
 
     return (
         <BrowserRouter>

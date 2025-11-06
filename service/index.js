@@ -1,7 +1,8 @@
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const express = require('express');
-const uuid = require('uuid');
+// const uuid = require('uuid');
+const { v4: uuidv4 } = require('uuid');
 const app = express();
 
 const authCookieName = 'token';
@@ -27,29 +28,36 @@ var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
-apiRouter.post('/api/auth/create', async (req, res) => {
+apiRouter.post('/auth/create', async (req, res) => {
+  console.log('[CREATE] body:', req.body);
   if (await findUser('username', req.body.username)) {
+    console.log('[CREATE] Username exists:', req.body.username);
     res.status(409).send({ msg: 'Existing user' });
   } else {
     const user = await createUser(req.body.name, req.body.username, req.body.password);
-
+    console.log('[CREATE] Created user:', { name: user.name, username: user.username });
     setAuthCookie(res, user.token);
     res.send({ name: user.name, username: user.username });
   }
 });
 
-// GetAuth login an existing user
+// GetAuth login an existing user (uses username now, not email)
 apiRouter.post('/auth/login', async (req, res) => {
-  const user = await findUser('email', req.body.email);
-  if (user) {
-    if (await bcrypt.compare(req.body.password, user.password)) {
-      user.token = uuid.v4();
-      setAuthCookie(res, user.token);
-      res.send({ email: user.email });
-      return;
-    }
+  console.log('[LOGIN] body:', req.body);
+  const user = await findUser('username', req.body.username);
+  if (!user) {
+    console.log('[LOGIN] User not found:', req.body.username);
+    return res.status(401).send({ msg: 'Invalid username or password' });
   }
-  res.status(401).send({ msg: 'Unauthorized' });
+  const match = await bcrypt.compare(req.body.password, user.password);
+  if (!match) {
+    console.log('[LOGIN] Password mismatch for:', req.body.username);
+    return res.status(401).send({ msg: 'Invalid username or password' });
+  }
+  user.token = uuidv4();
+  setAuthCookie(res, user.token);
+  console.log('[LOGIN] Success:', { name: user.name, username: user.username });
+  res.send({ name: user.name, username: user.username });
 });
 
 // DeleteAuth logout a user
@@ -117,12 +125,14 @@ function updateScores(newScore) {
 
 async function createUser(name, username, password) {
   const passwordHash = await bcrypt.hash(password, 10);
+  console.log('Debug createUser: getAge type is', typeof getAge);
 
   const user = {
     name: name,
     username: username,
     password: passwordHash,
-    token: uuid.v4(),
+    token: uuidv4(),
+    // token: uuid.v4(),
     games: [],
     friends: [],
     friendRequests: [],
@@ -133,9 +143,11 @@ async function createUser(name, username, password) {
   return user;
 }
 
+// Simple age helper (placeholder for future third-party integration)
 function getAge(name) {
-  // This will be replaced with a 3rd party service call
-  return Math.floor(Math.random() * 30) + 15 + name.length;
+  // Deterministic-ish pseudo age for demo
+  const base = 15 + (name ? name.length : 3);
+  return base + Math.floor(Math.random() * 20);
 }
 
 async function findUser(field, value) {
@@ -148,7 +160,8 @@ async function findUser(field, value) {
 function setAuthCookie(res, authToken) {
   res.cookie(authCookieName, authToken, {
     maxAge: 1000 * 60 * 60 * 24 * 365,
-    secure: true,
+    // For local development over http, secure must be false or cookie won't set.
+    secure: false,
     httpOnly: true,
     sameSite: 'strict',
   });

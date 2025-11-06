@@ -1,15 +1,5 @@
 import React, { useState } from 'react';
-import { Users } from './userObj';
 import './welcome.css';
-
-function getUserList() {
-    const list = localStorage.getItem('userList');
-    return list ? JSON.parse(list) : [];
-}
-
-function saveUserList(list) {
-    localStorage.setItem('userList', JSON.stringify(list));
-}
 
 export default function Unauthenticated({ onLogin }) {
     const [isNewUser, setIsNewUser] = useState(false);
@@ -19,64 +9,71 @@ export default function Unauthenticated({ onLogin }) {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSignup = (e) => {
-        e.preventDefault();
-        setError('');
-        let userList = getUserList();
-
-        if (!name.trim()) {
-            setError('Name is required');
-            return;
-        }
-        if (!username.trim()) {
-            setError('Username is required');
-            return;
-        }
-        if (!password) {
-            setError('Password is required');
-            return;
-        }
-        if (password !== confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-        if (userList.find((u) => u.username === username)) {
-            setError('Username already taken');
-            return;
-        }
-
-        const newUser = new Users(name, username, password);
-        userList.push(newUser);
-        saveUserList(userList);
-
-        localStorage.setItem('currentUser', JSON.stringify(newUser));
-        onLogin(newUser);
-    };
-
-    const handleLogin = (e) => {
+    const handleSignup = async (e) => {
         e.preventDefault();
         setError('');
 
-        if (!username.trim()) {
-            setError('Username required');
-            return;
-        }
-        if (!password) {
-            setError('Password required');
-            return;
-        }
+        // Basic validation
+        if (!name.trim()) return setError('Name is required');
+        if (!username.trim()) return setError('Username is required');
+        if (!password) return setError('Password is required');
+        if (password !== confirmPassword) return setError('Passwords do not match');
 
-        let userList = getUserList();
-        let user = userList.find((u) => u.username === username && u.password === password);
-
-        if (!user) {
-            setError('Invalid username or password');
-            return;
+        try {
+            const response = await fetch('/api/auth/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, username, password, age: await getAge(name) }),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // Optional: store minimal current user info locally
+                localStorage.setItem('currentUser', JSON.stringify(data));
+                onLogin(data);
+            } else {
+                const errBody = await response.json().catch(() => ({}));
+                setError(errBody.msg || 'Failed to create account');
+            }
+        } catch (err) {
+            setError('Backend not reachable');
         }
-
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        onLogin(user);
     };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError('');
+        if (!username.trim()) return setError('Username required');
+        if (!password) return setError('Password required');
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('currentUser', JSON.stringify(data));
+                onLogin(data);
+            } else {
+                const errBody = await response.json().catch(() => ({}));
+                setError(errBody.msg || 'Invalid username or password');
+            }
+        } catch (err) {
+            setError('Backend not reachable');
+        }
+    };
+
+    async function getAge(name) {
+        try {
+            const response = await fetch('https://api.agify.io?name=' + name);
+            const data = await response.json();
+            console.log('Predicted age data:', data);
+            return data.age;
+        } catch (error) {
+            console.error('Error getting age:', error);
+            return Math.floor(Math.random() * 30) + 15 + name.length;
+        }
+    }
 
     const toggleView = () => {
         setIsNewUser(!isNewUser);
@@ -137,9 +134,7 @@ export default function Unauthenticated({ onLogin }) {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
-                    <button type="submit" className="btn btn-success">
-                        Create Account
-                    </button>
+                    <button type="submit" className="btn btn-success">Create Account</button>
                     {error && <div className="error">{error}</div>}
                 </form>
             </div>
@@ -174,9 +169,12 @@ export default function Unauthenticated({ onLogin }) {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <button type="submit" className="btn btn-success">
-                        Log In
-                    </button>
+                    <div style={{ marginTop: '10px' }}>
+                        <button type="submit" className="btn btn-success" style={{ marginRight: '8px' }}>Log In</button>
+                        <button type="button" className="btn btn-secondary" onClick={getAge}>
+                            Test Age API
+                        </button>
+                    </div>
                     {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
                 </form>
             </div>
