@@ -29,6 +29,7 @@ Honestly the main thing I learned is that AI only slows you down I did not use a
 Honestly if there's a test I'm scared I'll have to remember this
 `./deployReact.sh -k <yourpemkey> -h <yourdomain> -s startup\`
 `./deployService.sh -k ~/keys/Practice.pem -h scorekeep.click -s simon`
+`./deployReact.sh -k ~/keys/Practice.pem -h scorekeep.click -s startup`
 
 ## React
 So I didn't do so great on the midterm so I sat in sadness and now I'm working on this.
