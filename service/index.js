@@ -27,146 +27,152 @@ app.use(express.static('public'));
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
-// CreateAuth a new user
+// // CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
-  console.log('[CREATE] body:', req.body);
-  if (await findUser('username', req.body.username)) {
-    console.log('[CREATE] Username exists:', req.body.username);
-    res.status(409).send({ msg: 'Existing user' });
-  } else {
-    const user = await createUser(req.body.name, req.body.username, req.body.password);
-    console.log('[CREATE] Created user:', { name: user.name, username: user.username });
-    setAuthCookie(res, user.token);
-    res.send({ name: user.name, username: user.username });
-  }
+    console.log('[CREATE] body:', req.body);
+    if (await findUser('username', req.body.username)) {
+        res.status(409).send({ msg: 'Existing user' });
+    } else {
+        const user = await createUser(
+            req.body.name,
+            req.body.username,
+            req.body.password,
+            req.body.age
+        );
+
+        setAuthCookie(res, user.token);
+        res.send({ username: user.username });
+    }
 });
 
-// GetAuth login an existing user (uses username now, not email)
+// GetAuth login an existing user
 apiRouter.post('/auth/login', async (req, res) => {
-  console.log('[LOGIN] body:', req.body);
-  const user = await findUser('username', req.body.username);
-  if (!user) {
-    console.log('[LOGIN] User not found:', req.body.username);
-    return res.status(401).send({ msg: 'Invalid username or password' });
-  }
-  const match = await bcrypt.compare(req.body.password, user.password);
-  if (!match) {
-    console.log('[LOGIN] Password mismatch for:', req.body.username);
-    return res.status(401).send({ msg: 'Invalid username or password' });
-  }
-  user.token = uuidv4();
-  setAuthCookie(res, user.token);
-  console.log('[LOGIN] Success:', { name: user.name, username: user.username });
-  res.send({ name: user.name, username: user.username });
+    console.log('[LOGIN] body:', req.body);
+    const user = await findUser('username', req.body.username);
+    console.log('[LOGIN] user:', user);
+    if (user) {
+        console.log('Stored hash:', user.password);
+        console.log('Password matches?', await bcrypt.compare(req.body.password, user.password));
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            console.log('debug 1');
+            user.token = uuidv4();
+            console.log('debug 2');
+            setAuthCookie(res, user.token);
+            console.log('debug 3');
+            res.send({ username: user.username });
+            console.log('debug 4');
+            return;
+        }
+    }
+    res.status(401).send({ msg: 'Unauthorized' });
 });
 
 // DeleteAuth logout a user
 apiRouter.delete('/auth/logout', async (req, res) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    delete user.token;
-  }
-  res.clearCookie(authCookieName);
-  res.status(204).end();
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+        delete user.token;
+    }
+    res.clearCookie(authCookieName);
+    res.status(204).end();
 });
 
 // Middleware to verify that the user is authorized to call an endpoint
 const verifyAuth = async (req, res, next) => {
-  const user = await findUser('token', req.cookies[authCookieName]);
-  if (user) {
-    next();
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (user) {
+        next();
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' });
+    }
 };
+
+// Return current authenticated user's public info
+apiRouter.get('/currentUser', async (req, res) => {
+    const user = await findUser('token', req.cookies[authCookieName]);
+    if (!user) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+    const { password, token, ...publicUser } = user;
+    res.send(publicUser);
+});
 
 // GetScores
 apiRouter.get('/scores', verifyAuth, (_req, res) => {
-  res.send(scores);
+    res.send(scores);
 });
 
 // SubmitScore
 apiRouter.post('/score', verifyAuth, (req, res) => {
-  scores = updateScores(req.body);
-  res.send(scores);
+    scores = updateScores(req.body);
+    res.send(scores);
 });
 
 // Default error handler
 app.use(function (err, req, res, next) {
-  res.status(500).send({ type: err.name, message: err.message });
+    res.status(500).send({ type: err.name, message: err.message });
 });
 
 // Return the application's default page if the path is unknown
 app.use((_req, res) => {
-  res.sendFile('index.html', { root: 'public' });
+    res.sendFile('index.html', { root: 'public' });
 });
 
 // updateScores considers a new score for inclusion in the high scores.
 function updateScores(newScore) {
-  let found = false;
-  for (const [i, prevScore] of scores.entries()) {
-    if (newScore.score > prevScore.score) {
-      scores.splice(i, 0, newScore);
-      found = true;
-      break;
+    let found = false;
+    for (const [i, prevScore] of scores.entries()) {
+        if (newScore.score > prevScore.score) {
+            scores.splice(i, 0, newScore);
+            found = true;
+            break;
+        }
     }
-  }
 
-  if (!found) {
-    scores.push(newScore);
-  }
+    if (!found) {
+        scores.push(newScore);
+    }
 
-  if (scores.length > 10) {
-    scores.length = 10;
-  }
+    if (scores.length > 10) {
+        scores.length = 10;
+    }
 
-  return scores;
+    return scores;
 }
 
-async function createUser(name, username, password) {
-  const passwordHash = await bcrypt.hash(password, 10);
-  console.log('Debug createUser: getAge type is', typeof getAge);
-
-  const user = {
-    name: name,
-    username: username,
-    password: passwordHash,
-    token: uuidv4(),
-    // token: uuid.v4(),
-    games: [],
-    friends: [],
-    friendRequests: [],
-    age: getAge(name),
-  };
-  users.push(user);
-
-  return user;
-}
-
-// Simple age helper (placeholder for future third-party integration)
-function getAge(name) {
-  // Deterministic-ish pseudo age for demo
-  const base = 15 + (name ? name.length : 3);
-  return base + Math.floor(Math.random() * 20);
+async function createUser(name, username, password, age) {
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = {
+        name,
+        username,
+        password: passwordHash,
+        token: uuidv4(),
+        games: [],
+        friends: [],
+        friendRequests: [],
+        age: age,
+    };
+    users.push(user);
+    return user;
 }
 
 async function findUser(field, value) {
-  if (!value) return null;
+    if (!value) return null;
 
-  return users.find((u) => u[field] === value);
+    return users.find((u) => u[field] === value);
 }
 
 // setAuthCookie in the HTTP response
 function setAuthCookie(res, authToken) {
-  res.cookie(authCookieName, authToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 365,
-    // For local development over http, secure must be false or cookie won't set.
-    secure: false,
-    httpOnly: true,
-    sameSite: 'strict',
-  });
+    res.cookie(authCookieName, authToken, {
+        maxAge: 1000 * 60 * 60 * 24 * 365,
+        // For local development over http, secure must be false or cookie won't set.
+        secure: false,
+        httpOnly: true,
+        sameSite: 'strict',
+    });
 }
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+    console.log(`Listening on port ${port}`);
 });

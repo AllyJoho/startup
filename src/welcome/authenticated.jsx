@@ -2,10 +2,6 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 export function Authenticated({ currentUser, onLogout }) {
-    if (!currentUser) {
-        return <div>Loading...</div>;
-    }
-
     const friendsCount = currentUser.friends ? currentUser.friends.length : 0;
     const gamesPlayed = currentUser.games ? currentUser.games.length : 0;
     const gamesWon = currentUser.games ? currentUser.games.filter((game) => game.won).length : 0;

@@ -18,49 +18,34 @@ export default function Unauthenticated({ onLogin }) {
         if (!username.trim()) return setError('Username is required');
         if (!password) return setError('Password is required');
         if (password !== confirmPassword) return setError('Passwords do not match');
+        const age = await getAge(name);
 
-        try {
-            const response = await fetch('/api/auth/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, username, password, age: await getAge(name) }),
-            });
-            if (response.ok) {
-                const data = await response.json();
-                // Optional: store minimal current user info locally
-                localStorage.setItem('currentUser', JSON.stringify(data));
-                onLogin(data);
-            } else {
-                const errBody = await response.json().catch(() => ({}));
-                setError(errBody.msg || 'Failed to create account');
-            }
-        } catch (err) {
-            setError('Backend not reachable');
-        }
+        const user = {
+            name: name,
+            username: username,
+            password: password,
+            games: [],
+            friends: [],
+            friendRequests: [],
+            age: age,
+        };
+
+        loginOrCreate(`/api/auth/create`, user);
     };
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
+
         if (!username.trim()) return setError('Username required');
         if (!password) return setError('Password required');
-        try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('currentUser', JSON.stringify(data));
-                onLogin(data);
-            } else {
-                const errBody = await response.json().catch(() => ({}));
-                setError(errBody.msg || 'Invalid username or password');
-            }
-        } catch (err) {
-            setError('Backend not reachable');
-        }
+
+        const user = {
+            username: username,
+            password: password,
+        };
+
+        loginOrCreate(`/api/auth/login`, user);
     };
 
     async function getAge(name) {
@@ -73,6 +58,24 @@ export default function Unauthenticated({ onLogin }) {
             console.error('Error getting age:', error);
             return Math.floor(Math.random() * 30) + 15 + name.length;
         }
+    }
+
+    async function loginOrCreate(endpoint, user) {
+        const response = await fetch(endpoint, {
+            method: 'post',
+            body: JSON.stringify(user),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        if (response?.status === 200) {
+            onLogin(user);
+        } else {
+            const body = await response.json();
+            setError(body.msg);
+        }
+        console.log(response);
+        console.log(localStorage);
     }
 
     const toggleView = () => {
@@ -134,7 +137,9 @@ export default function Unauthenticated({ onLogin }) {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                     </div>
-                    <button type="submit" className="btn btn-success">Create Account</button>
+                    <button type="submit" className="btn btn-success">
+                        Create Account
+                    </button>
                     {error && <div className="error">{error}</div>}
                 </form>
             </div>
@@ -169,12 +174,13 @@ export default function Unauthenticated({ onLogin }) {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <div style={{ marginTop: '10px' }}>
-                        <button type="submit" className="btn btn-success" style={{ marginRight: '8px' }}>Log In</button>
-                        <button type="button" className="btn btn-secondary" onClick={getAge}>
-                            Test Age API
-                        </button>
-                    </div>
+                    <button
+                        type="submit"
+                        className="btn btn-success"
+                        style={{ marginRight: '8px' }}
+                    >
+                        Log In
+                    </button>
                     {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
                 </form>
             </div>

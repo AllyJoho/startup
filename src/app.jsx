@@ -26,36 +26,37 @@ export default function App() {
             localStorage.setItem('userList', JSON.stringify(dummyUsers));
         }
 
-        // Check if user is already logged in on app mount
-        const storedUser = localStorage.getItem('currentUser');
-        if (storedUser) {
-            try {
-                const user = JSON.parse(storedUser);
+        fetch('/api/currentUser')
+            .then((response) => response.json())
+            .then((user) => {
                 setCurrentUser(user);
-            } catch (e) {
-                console.error('Failed to parse stored user:', e);
-            }
-        }
+            });
     }, []);
 
     const handleLogin = (user) => {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        setCurrentUser(user);
+        // localStorage.setItem('currentUser', JSON.stringify(user));
+        // setCurrentUser(user);
+        fetch('/api/currentUser')
+            .then((response) => response.json())
+            .then((user) => {
+                setCurrentUser(user);
+            });
         setLoggedin(true);
     };
 
     const handleLogout = () => {
-    fetch(`/api/auth/logout`, {
-      method: 'delete',
-    })
-      .catch(() => {
-        // Logout failed. Assuming offline
-      })
-      .finally(() => {
-        localStorage.removeItem('userName');
-        props.onLogout();
-      });
-        };
+        fetch(`/api/auth/logout`, {
+            method: 'delete',
+        })
+            .catch(() => {
+                // Logout failed. Assuming offline
+            })
+            .finally(() => {
+                localStorage.removeItem('currentUser');
+                setCurrentUser(null);
+                setLoggedin(false);
+            });
+    };
 
     return (
         <BrowserRouter>
