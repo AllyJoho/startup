@@ -1,47 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './friends.css';
 
-export function FriendRequestsView({ currentUser, users, saveUsers, saveCurrentUser }) {
-    const [requests, setRequests] = useState(currentUser.friendRequests);
+export function FriendRequestsView({ currentUser, users, saveUsers, saveCurrentUser, onFriendAccepted }) {
+    const [requests, setRequests] = useState([]);
 
-    const acceptFriendRequest = (request) => {
-        const currentUserObj = users.find((u) => u.username === currentUser.username);
-        const senderObj = users.find((u) => u.username === request.sender);
-
-        if (senderObj && !currentUserObj.friends.some((f) => f.username === senderObj.username)) {
-            currentUserObj.friends.push({
-                username: senderObj.username,
-                name: senderObj.name,
-                age: senderObj.age,
+        useEffect(() => {
+            fetch('/api/friendRequests')
+            .then((response) => response.json())
+            .then((friends) => {
+                setRequests(friends);
             });
-        }
-        if (senderObj && !senderObj.friends.some((f) => f.username === currentUserObj.username)) {
-            senderObj.friends.push({
-                username: currentUserObj.username,
-                name: currentUserObj.name,
-                age: currentUserObj.age,
-            });
-        }
+        }, [onFriendAccepted]);
 
-        currentUserObj.friendRequests = currentUserObj.friendRequests.filter(
-            (r) => r.sender !== request.sender
-        );
-
-        saveUsers(users);
-        saveCurrentUser(currentUserObj);
-        setRequests(currentUserObj.friendRequests);
+    const acceptFriendRequest = async (request) => {
+        const response = await fetch('/api/acceptFriendRequest', {
+            method: 'POST',
+            body: JSON.stringify({
+                    request: request,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        if (response?.status === 200) {
+            if (onFriendAccepted) onFriendAccepted();
+        }
+        console.log(response);
     };
 
-    const declineFriendRequest = (request) => {
-        const currentUserObj = users.find((u) => u.username === currentUser.username);
-        currentUserObj.friendRequests = currentUserObj.friendRequests.filter(
-            (r) => r.sender !== request.sender
-        );
-
-        saveUsers(users);
-        saveCurrentUser(currentUserObj);
-        setRequests(currentUserObj.friendRequests);
+    const declineFriendRequest = async (request) => {
+        const response = await fetch('/api/rejectFriendRequest', {
+            method: 'POST',
+            body: JSON.stringify({
+                    request: request,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        console.log(response);
     };
+
     return (
         <div>
             <h3 className="friendRequests">Friend Requests: {requests.length}</h3>

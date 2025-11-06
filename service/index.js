@@ -9,6 +9,7 @@ const authCookieName = 'token';
 
 let users = [];
 let games = [];
+let scores = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -105,6 +106,101 @@ apiRouter.get('/scores', verifyAuth, (_req, res) => {
 apiRouter.post('/score', verifyAuth, (req, res) => {
     scores = updateScores(req.body);
     res.send(scores);
+});
+
+// Send friend request
+apiRouter.post('/sendFriendRequest', verifyAuth, async (req, res) => {
+    const currentUser = await findUser('token', req.cookies[authCookieName]);
+    if (!currentUser) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+
+    const { username } = req.body;
+
+    const friendUser = await findUser('username', username);
+    if (!friendUser) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+
+    if (currentUser.username === username) {
+        return res.status(400).send({ msg: 'Cannot add yourself as a friend' });
+    }
+
+    if (currentUser.friends.some(f => (typeof f === 'string' ? f === username : f.username === username))) {
+        return res.status(400).send({ msg: 'Already friends' });
+    }
+
+    if (friendUser.friendRequests.some(fr => fr.senderUsername === currentUser.username)) {
+        return res.status(400).send({ msg: 'Friend request already sent' });
+    }
+
+    const friendRequest = {
+        senderName: currentUser.name,
+        senderUsername: currentUser.username,
+        recipientUsername: friendUser.username,
+    };
+
+    friendUser.friendRequests.push(friendRequest);
+    res.send(friendRequest);
+});
+
+// Accept friend request
+apiRouter.post('/acceptFriendRequest', verifyAuth, async (req, res) => {
+    const currentUser = await findUser('token', req.cookies[authCookieName]);
+    if (!currentUser) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+
+    const { request } = req.body;
+
+    const friendUser = await findUser('username', request.senderUsername);
+    if (!friendUser) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+
+    currentUser.friends.push({ name: friendUser.name, username: friendUser.username });
+    friendUser.friends.push({ name: currentUser.name, username: currentUser.username });
+
+    currentUser.friendRequests = currentUser.friendRequests.filter(fr => !(fr.senderUsername === friendUser.username));
+
+    res.send({ username: friendUser.username });
+});
+
+// Reject friend request
+apiRouter.post('/rejectFriendRequest', verifyAuth, async (req, res) => {
+    const currentUser = await findUser('token', req.cookies[authCookieName]);
+    if (!currentUser) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+
+    const { request } = req.body;
+
+    const friendUser = await findUser('username', request.senderUsername);
+    if (!friendUser) {
+        return res.status(404).send({ msg: 'User not found' });
+    }
+
+    currentUser.friendRequests = currentUser.friendRequests.filter(fr => !(fr.senderUsername === friendUser.username));
+
+    res.send({ username: friendUser.username });
+});
+
+// Get friend requests for current user
+apiRouter.get('/friendRequests', verifyAuth, async (req, res) => {
+    const currentUser = await findUser('token', req.cookies[authCookieName]);
+    if (!currentUser) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+    res.send(currentUser.friendRequests || []);
+});
+
+// Get friends list for current user
+apiRouter.get('/friends', verifyAuth, async (req, res) => {
+    const currentUser = await findUser('token', req.cookies[authCookieName]);
+    if (!currentUser) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+    res.send(currentUser.friends || []);
 });
 
 // Default error handler

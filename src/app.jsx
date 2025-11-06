@@ -15,17 +15,6 @@ export default function App() {
     const [loggedin, setLoggedin] = useState(false);
 
     useEffect(() => {
-        // Initialize dummy users if none exist
-        const userList = localStorage.getItem('userList');
-        if (!userList || JSON.parse(userList).length === 0) {
-            const dummyUsers = [
-                new Users('Jim', 'a', 'a'),
-                new Users('Joe', 'b', 'b'),
-                new Users('Job', 'c', 'c'),
-            ];
-            localStorage.setItem('userList', JSON.stringify(dummyUsers));
-        }
-
         fetch('/api/currentUser')
             .then((response) => response.json())
             .then((user) => {

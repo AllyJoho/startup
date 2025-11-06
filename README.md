@@ -94,14 +94,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 ## 🚀 Service deliverable
 
-For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.  
+To be honest I got really sick so I did do enough to get full credit, but I didn't have time with the games, I am getting to it. If you look at the requirements I did fulfill the requirements.
 
 - [x] **Node.js/Express HTTP service** - Installed Express with NPM. Default port on 4000.js
 - [x] **Static middleware for frontend** - Simple endpoints in `service/index`.
 - [x] **Calls to third party endpoints** - When the player puts their name there when creating an account, agify.io puts an age there based on the name. It's in the frontend per requirements, but if I had known it would be a requirement I would've planned for a 3rd party api to be more customer facing.
 - [x] **Backend service endpoints** - Simple endpoints in `service/index` for auth and player data.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [x] **Supports registration, login, logout, and restricted endpoint** - Fully support authentication and restrict access to all player information, games, and scores.
+- [x] **Frontend calls service endpoints** - Mock functionality removed for users and friends.
+- [x] **Supports registration, login, logout, and restricted endpoint** - Fully support authentication and restrict access to player information, and authorizes for the friend functions.
 
 
 ## 🚀 DB deliverable

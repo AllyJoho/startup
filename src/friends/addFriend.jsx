@@ -1,11 +1,26 @@
 import React, { useState } from 'react';
 import './friends.css';
 
-import { FriendRequest } from './friendRequestObj';
-
 export function AddFriendView({ currentUser, users, saveUsers, saveCurrentUser }) {
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
+
+    async function AddFriend(username) {
+        const response = await fetch('/api/sendFriendRequest', {
+            method: 'post',
+            body: JSON.stringify({ username: username }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        if (response?.status === 200) {
+            setMessage('Friend request sent!');
+        } else {
+            const body = await response.json();
+            setMessage(body.msg);
+        }
+        console.log(response);
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -14,36 +29,7 @@ export function AddFriendView({ currentUser, users, saveUsers, saveCurrentUser }
             setMessage('Please enter a username.');
             return;
         }
-        if (username === currentUser.username) {
-            setMessage('You cannot add yourself.');
-            return;
-        }
-        const recipient = users.find((u) => u.username === username);
-        if (!recipient) {
-            setMessage('User not found.');
-            return;
-        }
-        const alreadyRequested = (recipient.friendRequests || []).some(
-            (fr) => fr.sender === currentUser.username
-        );
-        if (alreadyRequested) {
-            setMessage('Friend request already sent.');
-            return;
-        }
-
-        const newRequest = new FriendRequest(
-            currentUser.name,
-            currentUser.username,
-            recipient.username
-        );
-        if (!recipient.friendRequests) recipient.friendRequests = [];
-        recipient.friendRequests.push(newRequest);
-
-        const updatedUsers = users.map((u) => (u.username === recipient.username ? recipient : u));
-        saveUsers(updatedUsers);
-        setMessage('Friend request sent!');
-        setUsername('');
-        saveCurrentUser(currentUser);
+        AddFriend(username);
     }
 
     return (
