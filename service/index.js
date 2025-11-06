@@ -7,9 +7,8 @@ const app = express();
 
 const authCookieName = 'token';
 
-// The scores and users are saved in memory and disappear whenever the service is restarted.
 let users = [];
-let scores = [];
+let games = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -27,7 +26,7 @@ app.use(express.static('public'));
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
-// // CreateAuth a new user
+// CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
     console.log('[CREATE] body:', req.body);
     if (await findUser('username', req.body.username)) {
