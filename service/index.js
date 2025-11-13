@@ -8,9 +8,6 @@ const DB = require('./database.js');
 
 const authCookieName = 'token';
 
-let users = [];
-let games = [];
-
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -29,7 +26,6 @@ app.use(`/api`, apiRouter);
 
 // CreateAuth a new user
 apiRouter.post('/auth/create', async (req, res) => {
-    console.log('[CREATE] body:', req.body);
     if (await findUser('username', req.body.username)) {
         res.status(409).send({ msg: 'Existing user' });
     } else {
@@ -59,6 +55,7 @@ apiRouter.post('/auth/login', async (req, res) => {
             console.log('debug 2');
             setAuthCookie(res, user.token);
             console.log('debug 3');
+            await DB.updateUser(user);
             res.send({ username: user.username });
             console.log('debug 4');
             return;
@@ -72,6 +69,7 @@ apiRouter.delete('/auth/logout', async (req, res) => {
     const user = await findUser('token', req.cookies[authCookieName]);
     if (user) {
         delete user.token;
+        await DB.updateUser(user);
     }
     res.clearCookie(authCookieName);
     res.status(204).end();
@@ -97,18 +95,6 @@ apiRouter.get('/currentUser', async (req, res) => {
     res.send(publicUser);
 });
 
-// GetScores
-apiRouter.get('/scores', verifyAuth, async (req, res) => {
-  const scores = await DB.getHighScores();
-  res.send(scores);
-});
-
-// SubmitScore
-apiRouter.post('/score', verifyAuth, async (req, res) => {
-  const scores = updateScores(req.body);
-  res.send(scores);
-});
-
 // Send friend request
 apiRouter.post('/sendFriendRequest', verifyAuth, async (req, res) => {
     const currentUser = await findUser('token', req.cookies[authCookieName]);
@@ -131,7 +117,8 @@ apiRouter.post('/sendFriendRequest', verifyAuth, async (req, res) => {
         return res.status(400).send({ msg: 'Already friends' });
     }
 
-    if (friendUser.friendRequests.some(fr => fr.senderUsername === currentUser.username)) {
+    const existingRequest = await DB.findFriendRequest(currentUser.username, username);
+    if (existingRequest) {
         return res.status(400).send({ msg: 'Friend request already sent' });
     }
 
@@ -141,7 +128,7 @@ apiRouter.post('/sendFriendRequest', verifyAuth, async (req, res) => {
         recipientUsername: friendUser.username,
     };
 
-    friendUser.friendRequests.push(friendRequest);
+    await DB.addFriendRequest(friendRequest);
     res.send(friendRequest);
 });
 
@@ -159,10 +146,16 @@ apiRouter.post('/acceptFriendRequest', verifyAuth, async (req, res) => {
         return res.status(404).send({ msg: 'User not found' });
     }
 
+    // Add each other as friends
     currentUser.friends.push({ name: friendUser.name, username: friendUser.username });
     friendUser.friends.push({ name: currentUser.name, username: currentUser.username });
 
-    currentUser.friendRequests = currentUser.friendRequests.filter(fr => !(fr.senderUsername === friendUser.username));
+    // Remove the friend request
+    await DB.removeFriendRequest(request.senderUsername, currentUser.username);
+
+    // Update both users in database
+    await DB.updateUser(currentUser);
+    await DB.updateUser(friendUser);
 
     res.send({ username: friendUser.username });
 });
@@ -181,7 +174,8 @@ apiRouter.post('/rejectFriendRequest', verifyAuth, async (req, res) => {
         return res.status(404).send({ msg: 'User not found' });
     }
 
-    currentUser.friendRequests = currentUser.friendRequests.filter(fr => !(fr.senderUsername === friendUser.username));
+    // Remove the friend request
+    await DB.removeFriendRequest(request.senderUsername, currentUser.username);
 
     res.send({ username: friendUser.username });
 });
@@ -192,7 +186,8 @@ apiRouter.get('/friendRequests', verifyAuth, async (req, res) => {
     if (!currentUser) {
         return res.status(401).send({ msg: 'Unauthorized' });
     }
-    res.send(currentUser.friendRequests || []);
+    const friendRequests = await DB.getFriendRequestsForUser(currentUser.username);
+    res.send(friendRequests);
 });
 
 // Get friends list for current user
@@ -214,12 +209,6 @@ app.use((_req, res) => {
     res.sendFile('index.html', { root: 'public' });
 });
 
-// updateScores considers a new score for inclusion in the high scores.
-async function updateScores(newScore) {
-  await DB.addScore(newScore);
-  return DB.getHighScores();
-}
-
 async function createUser(name, username, password, age) {
     const passwordHash = await bcrypt.hash(password, 10);
     const user = {
@@ -229,17 +218,19 @@ async function createUser(name, username, password, age) {
         token: uuidv4(),
         games: [],
         friends: [],
-        friendRequests: [],
         age: age,
     };
-    users.push(user);
+    await DB.addUser(user);
     return user;
 }
 
 async function findUser(field, value) {
     if (!value) return null;
 
-    return users.find((u) => u[field] === value);
+  if (field === 'token') {
+    return DB.getUserByToken(value);
+  }
+  return DB.getUser(value);
 }
 
 // setAuthCookie in the HTTP response

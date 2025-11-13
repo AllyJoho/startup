@@ -58,14 +58,6 @@ export function History({ currentUser }) {
                     })
                 )}
             </div>
-            <button
-                onClick={() => {
-                    localStorage.clear();
-                    window.location.reload();
-                }}
-            >
-                Clear All Data for testing purposes
-            </button>
         </main>
     );
 }
