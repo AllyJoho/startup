@@ -4,12 +4,12 @@ const express = require('express');
 // const uuid = require('uuid');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
+const DB = require('./database.js');
 
 const authCookieName = 'token';
 
 let users = [];
 let games = [];
-let scores = [];
 
 // The service port. In production the front-end code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -98,14 +98,15 @@ apiRouter.get('/currentUser', async (req, res) => {
 });
 
 // GetScores
-apiRouter.get('/scores', verifyAuth, (_req, res) => {
-    res.send(scores);
+apiRouter.get('/scores', verifyAuth, async (req, res) => {
+  const scores = await DB.getHighScores();
+  res.send(scores);
 });
 
 // SubmitScore
-apiRouter.post('/score', verifyAuth, (req, res) => {
-    scores = updateScores(req.body);
-    res.send(scores);
+apiRouter.post('/score', verifyAuth, async (req, res) => {
+  const scores = updateScores(req.body);
+  res.send(scores);
 });
 
 // Send friend request
@@ -214,25 +215,9 @@ app.use((_req, res) => {
 });
 
 // updateScores considers a new score for inclusion in the high scores.
-function updateScores(newScore) {
-    let found = false;
-    for (const [i, prevScore] of scores.entries()) {
-        if (newScore.score > prevScore.score) {
-            scores.splice(i, 0, newScore);
-            found = true;
-            break;
-        }
-    }
-
-    if (!found) {
-        scores.push(newScore);
-    }
-
-    if (scores.length > 10) {
-        scores.length = 10;
-    }
-
-    return scores;
+async function updateScores(newScore) {
+  await DB.addScore(newScore);
+  return DB.getHighScores();
 }
 
 async function createUser(name, username, password, age) {
