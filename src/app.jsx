@@ -13,12 +13,31 @@ import { Users } from './welcome/userObj';
 export default function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [loggedin, setLoggedin] = useState(false);
+    const [authChecked, setAuthChecked] = useState(false);
 
     useEffect(() => {
+        console.log('Checking authentication...');
         fetch('/api/currentUser')
-            .then((response) => response.json())
+            .then((response) => {
+                console.log('Auth response status:', response.status);
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log('User not authenticated');
+                    return null;
+                }
+            })
             .then((user) => {
+                console.log('User data:', user);
                 setCurrentUser(user);
+                setLoggedin(!!user);
+                setAuthChecked(true);
+            })
+            .catch((error) => {
+                console.error('Error checking authentication:', error);
+                setCurrentUser(null);
+                setLoggedin(false);
+                setAuthChecked(true);
             });
     }, []);
 
@@ -26,11 +45,22 @@ export default function App() {
         // localStorage.setItem('currentUser', JSON.stringify(user));
         // setCurrentUser(user);
         fetch('/api/currentUser')
-            .then((response) => response.json())
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return null;
+                }
+            })
             .then((user) => {
                 setCurrentUser(user);
+                setLoggedin(!!user);
+            })
+            .catch((error) => {
+                console.error('Error after login:', error);
+                setCurrentUser(null);
+                setLoggedin(false);
             });
-        setLoggedin(true);
     };
 
     const handleLogout = () => {
@@ -41,7 +71,6 @@ export default function App() {
                 // Logout failed. Assuming offline
             })
             .finally(() => {
-                localStorage.removeItem('currentUser');
                 setCurrentUser(null);
                 setLoggedin(false);
             });
@@ -86,11 +115,15 @@ export default function App() {
                     <Route
                         path="/"
                         element={
-                            <Welcome
-                                currentUser={currentUser}
-                                onLogin={handleLogin}
-                                onLogout={handleLogout}
-                            />
+                            authChecked ? (
+                                <Welcome
+                                    currentUser={currentUser}
+                                    onLogin={handleLogin}
+                                    onLogout={handleLogout}
+                                />
+                            ) : (
+                                <div className="loading">Loading...</div>
+                            )
                         }
                         exact
                     />

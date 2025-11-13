@@ -108,9 +108,10 @@ To be honest I got really sick so I did do enough to get full credit, but I didn
 ## 🚀 DB deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
+So same for this I wasn't able to do a lot so I did enough
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [ ] **Stores data in MongoDB** - All player data is in the database, and I moved the friends information out there to make friend requests and stuff easier.
+- [ ] **Stores credentials in MongoDB** - Logging in and out and everything works great and is through the database.
 
 ## 🚀 WebSocket deliverable
 

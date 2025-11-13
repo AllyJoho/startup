@@ -122,6 +122,11 @@ apiRouter.post('/sendFriendRequest', verifyAuth, async (req, res) => {
         return res.status(400).send({ msg: 'Friend request already sent' });
     }
 
+    const reverseRequest = await DB.findFriendRequest(username, currentUser.username);
+    if (reverseRequest) {
+        return res.status(400).send({ msg: 'This user has already sent you a friend request' });
+    }
+
     const friendRequest = {
         senderName: currentUser.name,
         senderUsername: currentUser.username,
@@ -144,6 +149,14 @@ apiRouter.post('/acceptFriendRequest', verifyAuth, async (req, res) => {
     const friendUser = await findUser('username', request.senderUsername);
     if (!friendUser) {
         return res.status(404).send({ msg: 'User not found' });
+    }
+
+    // Check if they're already friends
+    const alreadyFriends = currentUser.friends.some(f => f.username === friendUser.username);
+    if (alreadyFriends) {
+        // Remove the friend request anyway and return success
+        await DB.removeFriendRequest(request.senderUsername, currentUser.username);
+        return res.send({ username: friendUser.username });
     }
 
     // Add each other as friends
