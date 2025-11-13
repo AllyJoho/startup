@@ -130,7 +130,7 @@ export default function App() {
                 <footer>
                     <div className="container-fluid">
                         <span className="text-reset">
-                            This project is maintained by Allison Johanson (Service Version)
+                            This project is maintained by Allison Johanson (Database Version)
                         </span>
                         <a className="text-reset" href="https://github.com/AllyJoho/startup.git">
                             (Github)
