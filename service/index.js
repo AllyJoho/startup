@@ -212,6 +212,45 @@ apiRouter.get('/friends', verifyAuth, async (req, res) => {
     res.send(currentUser.friends || []);
 });
 
+// Add game to history
+apiRouter.post('/addGame', verifyAuth, async (req, res) => {
+    const currentUser = await findUser('token', req.cookies[authCookieName]);
+    if (!currentUser) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+
+    // alert
+    const { game, playerUsernames } = req.body;
+    if (!game || !playerUsernames || !Array.isArray(playerUsernames)) {
+        return res.status(400).send({ msg: 'Incorrect game data' });
+    }
+    // alert
+
+    // Add game to each player's games array
+    for (const username of playerUsernames) {
+        const user = await findUser('username', username);
+        if (user) {
+            if (!user.games) {
+                user.games = [];
+            }
+            user.games.push(game);
+            await DB.updateUser(user);
+        }
+    }
+    // also work on this bit // alert
+
+    res.send({ success: true, gameId: game.id });
+});
+
+// Get games
+apiRouter.get('/games', verifyAuth, async (req, res) => {
+    const currentUser = await findUser('token', req.cookies[authCookieName]);
+    if (!currentUser) {
+        return res.status(401).send({ msg: 'Unauthorized' });
+    }
+    res.send(currentUser.games || []);
+});
+
 // Default error handler
 app.use(function (err, req, res, next) {
     res.status(500).send({ type: err.name, message: err.message });

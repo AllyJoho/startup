@@ -40,15 +40,14 @@ export function CreateGame({
 
         const gameId = 'game_' + Date.now();
         const players = [
-            { username: currentUser.username, name: currentUser.name, score: 0, accepted: true },
-            ...selectedFriends.map((username) => {
-                const friend = users.find((u) => u.username === username);
-                return { username, name: friend?.name || username, score: 0, accepted: false };
+            { username: currentUser.username, name: currentUser.name, score: 0 },
+            ...selectedFriends.map((friendUsername) => {
+                const friend = currentUser.friends.find((f) => f.username === friendUsername);
+                return { username: friendUsername, name: friend?.name || friendUsername, score: 0 };
             }),
         ];
 
         const newGame = new Game(gameId, gameName, scoreType, currentUser.username, players);
-        newGame.status = 'pending';
 
         const updatedGames = [...games, newGame];
         saveGames(updatedGames);

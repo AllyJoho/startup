@@ -3,19 +3,30 @@ import './history.css';
 
 export function History({ currentUser }) {
     const [finishedGames, setFinishedGames] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const gamesString = localStorage.getItem('gameList');
-        const allGames = gamesString ? JSON.parse(gamesString) : [];
+        const fetchGames = async () => {
+            try {
+                const response = await fetch('/api/games');
+                if (response.ok) {
+                    const games = await response.json();
+                    setFinishedGames(games);
+                } else {
+                    console.error('Failed to fetch games');
+                    setFinishedGames([]);
+                }
+            } catch (error) {
+                console.error('Error fetching games:', error);
+                setFinishedGames([]);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-        const userFinishedGames = allGames.filter(
-            (g) =>
-                g.status === 'finished' &&
-                g.players.some((p) => p.username === currentUser.username)
-        );
+        fetchGames();
+    }, []);
 
-        setFinishedGames(userFinishedGames);
-    }, [currentUser.username]);
 
     return (
         <main className="views">
@@ -30,6 +41,9 @@ export function History({ currentUser }) {
                     <p>No finished games yet. Play some games to see your history!</p>
                 ) : (
                     finishedGames.map((game) => {
+                        const gameDate = game.completedDate ? new Date(game.completedDate).toLocaleDateString() : 'Date unknown';
+                        const winnerPlayer = game.players.find(p => p.username === game.winner);
+                        
                         const sortedPlayers = [...game.players].sort((a, b) => {
                             if (game.scoreType === 'low') {
                                 return a.score - b.score;
@@ -38,13 +52,12 @@ export function History({ currentUser }) {
                             }
                         });
 
-                        const winner = sortedPlayers[0];
-
                         return (
                             <div key={game.id} className="gameHistory">
                                 <h3>{game.name}</h3>
-                                <span className="winner">{winner.name} WON!</span>
-                                <h5>You played with:</h5>
+                                <p className="game-date">{gameDate}</p>
+                                <span className="winner">{winnerPlayer?.name || 'Unknown'} WON!</span>
+                                <h5>Final Scores:</h5>
                                 <ol className="rank">
                                     {sortedPlayers.map((player) => (
                                         <li key={player.username}>

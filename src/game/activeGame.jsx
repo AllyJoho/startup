@@ -9,7 +9,7 @@ export function ActiveGame({
     gameId,
     onGameEnd,
 }) {
-    const [scoreInput, setScoreInput] = useState('');
+    const [message, setMessage] = useState('');
 
     const game = games.find((g) => g.id === gameId);
 
@@ -17,26 +17,17 @@ export function ActiveGame({
         return <div>Game not found</div>;
     }
 
-    const sortedPlayers = [...game.players].sort((a, b) => {
-        if (game.scoreType === 'low') {
-            return a.score - b.score;
-        } else {
-            return b.score - a.score;
-        }
-    });
+    const isCreator = game.creator === currentUser.username;
 
-    const handleScoreChange = (operation) => {
-        const scoreValue = parseInt(scoreInput);
-        if (isNaN(scoreValue)) {
-            alert('Please enter a number');
-            return;
-        }
+    const handleScoreChange = (username, operation, inputElement) => {
+        const scoreValue = parseInt(inputElement.value || '1');
+
         const updatedGames = games.map((g) => {
             if (g.id !== gameId) return g;
             return {
                 ...g,
                 players: g.players.map((p) =>
-                    p.username === currentUser.username
+                    p.username === username
                         ? {
                               ...p,
                               score:
@@ -48,7 +39,51 @@ export function ActiveGame({
         });
 
         saveGames(updatedGames);
-        setScoreInput('');
+        inputElement.value = '';
+    };
+
+    const handleEndGame = async () => {
+        // Sort to determine winner
+        const sortedPlayers = [...game.players].sort((a, b) => {
+            if (game.scoreType === 'low') {
+                return a.score - b.score;
+            } else {
+                return b.score - a.score;
+            }
+        });
+        
+        const winner = sortedPlayers[0];
+        const completedGame = {
+            ...game,
+            winner: winner.username,
+            completedDate: new Date().toISOString(),
+        };
+
+        // Save to all players' histories
+        const playerUsernames = game.players.map(p => p.username);
+        
+        try {
+            const response = await fetch('/api/addGame', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    game: completedGame,
+                    playerUsernames: playerUsernames
+                })
+            });
+
+            if (response.ok) {
+                // Remove from local games list
+                const updatedGames = games.filter(g => g.id !== gameId);
+                saveGames(updatedGames);
+                onGameEnd();
+            } else {
+                setMessage('Failed to save game');
+            }
+        } catch (error) {
+            console.error('Error ending game:', error);
+            setMessage('Error ending game. Please try again.');
+        }
     };
 
     return (
@@ -61,43 +96,51 @@ export function ActiveGame({
                 </span>
             </p>
             <p>Players:</p>
-            <ol className="rank">
-                {sortedPlayers.map((player) => (
-                    <li
-                        key={player.username}
-                        className={player.accepted && game.status === 'pending' ? 'active' : ''}
-                    >
-                        {player.name}: {player.score}
-                    </li>
+            <div className="player-scores">
+                {game.players.map((player) => (
+                    <div key={player.username} className="player-row">
+                        <span className="player-name">{player.name}:</span>
+                        <span className="player-score">{player.score}</span>
+                        <div className="score-controls">
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    const input = e.target.parentElement.querySelector('.score-input');
+                                    handleScoreChange(player.username, 'subtract', input);
+                                }}
+                                className="btn btn-sm btn-danger"
+                            >
+                                -
+                            </button>
+                            <input
+                                type="number"
+                                placeholder="0"
+                                className="score-input"
+                                defaultValue=""
+                            />
+                            <button
+                                type="button"
+                                onClick={(e) => {
+                                    const input = e.target.parentElement.querySelector('.score-input');
+                                    handleScoreChange(player.username, 'add', input);
+                                }}
+                                className="btn btn-sm btn-success"
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
                 ))}
-            </ol>
-            {game.status === 'active' && (
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <label htmlFor="player-score">Enter Your Score:</label>
-                    <input
-                        type="number"
-                        id="player-score"
-                        name="player-score"
-                        value={scoreInput}
-                        onChange={(e) => setScoreInput(e.target.value)}
-                        required
-                    />
-                    <button
-                        type="button"
-                        onClick={() => handleScoreChange('subtract')}
-                        className="btn btn-danger"
-                    >
-                        Subtract Score
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => handleScoreChange('add')}
-                        className="btn btn-success"
-                    >
-                        Add Score
-                    </button>
-                </form>
-            )}
+            </div>
+            <br />
+            <button
+                type="button"
+                onClick={handleEndGame}
+                className="btn btn-primary"
+            >
+                End Game
+            </button>
+            {message && <div className="alert alert-info">{message}</div>}
         </div>
     );
 }

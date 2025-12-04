@@ -19,10 +19,11 @@ export function Game({ currentUser }) {
     const [view, setView] = useState('no-game');
 
     useEffect(() => {
-        const activeGame = games.find(
-            (g) =>
-                g.status === 'active' && g.players.find((p) => p.username === currentUser.username)
-        );
+        // const activeGame = games.find(
+        //     (g) =>
+        //         g.status === 'active' && g.players.find((p) => p.username === currentUser.username)
+        // );
+        const activeGame = games.find((g) => g.creator === currentUser.username);
         if (activeGame) {
             setCurrentGameId(activeGame.id);
             setView('active');
