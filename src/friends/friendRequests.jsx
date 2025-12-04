@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './friends.css';
 
-export function FriendRequestsView({ currentUser, users, saveUsers, saveCurrentUser, onFriendAccepted }) {
+export function FriendRequestsView({ currentUser, onFriendAccepted }) {
     const [requests, setRequests] = useState([]);
 
         useEffect(() => {

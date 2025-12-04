@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './friends.css';
 
-export function AddFriendView({ currentUser, users, saveUsers, saveCurrentUser }) {
+export function AddFriendView({ currentUser }) {
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
 

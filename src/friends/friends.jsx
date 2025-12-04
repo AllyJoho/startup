@@ -4,19 +4,8 @@ import { FriendListView } from './friendList';
 import { FriendRequestsView } from './friendRequests';
 
 export function Friends({ currentUser }) {
-    const [users, setUsers] = useState(() => {
-        const usersString = localStorage.getItem('userList');
-        return usersString ? JSON.parse(usersString) : [];
-    });
-    const [friendsRefreshTrigger, setFriendsRefreshTrigger] = useState(0);
 
-    const saveUsers = (updatedUsers) => {
-        localStorage.setItem('userList', JSON.stringify(updatedUsers));
-        setUsers(updatedUsers);
-    };
-    const saveCurrentUser = (updatedUser) => {
-        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-    };
+    const [friendsRefreshTrigger, setFriendsRefreshTrigger] = useState(0);
 
     const refreshFriends = () => {
         setFriendsRefreshTrigger(prev => prev === 0 ? 1 : 0);
@@ -30,15 +19,9 @@ export function Friends({ currentUser }) {
                 <FriendRequestsView
                     onFriendAccepted={refreshFriends}
                     currentUser={currentUser}
-                    users={users}
-                    saveUsers={saveUsers}
-                    saveCurrentUser={saveCurrentUser}
                 />
                 <AddFriendView
                     currentUser={currentUser}
-                    users={users}
-                    saveUsers={saveUsers}
-                    saveCurrentUser={saveCurrentUser}
                 />
             </div>
         </main>

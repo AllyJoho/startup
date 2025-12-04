@@ -6,6 +6,5 @@ export class Game {
         this.creator = creator;
         this.players = players;
         this.winner = null;
-        this.status = 'unknown';
     }
 }

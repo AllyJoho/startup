@@ -42,8 +42,6 @@ export default function App() {
     }, []);
 
     const handleLogin = (user) => {
-        // localStorage.setItem('currentUser', JSON.stringify(user));
-        // setCurrentUser(user);
         fetch('/api/currentUser')
             .then((response) => {
                 if (response.ok) {
