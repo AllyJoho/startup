@@ -51,7 +51,7 @@ export function ActiveGame({
                 return b.score - a.score;
             }
         });
-        
+
         const winner = sortedPlayers[0];
         const completedGame = {
             ...game,
@@ -60,21 +60,21 @@ export function ActiveGame({
         };
 
         // Save to all players' histories
-        const playerUsernames = game.players.map(p => p.username);
-        
+        const playerUsernames = game.players.map((p) => p.username);
+
         try {
             const response = await fetch('/api/addGame', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     game: completedGame,
-                    playerUsernames: playerUsernames
-                })
+                    playerUsernames: playerUsernames,
+                }),
             });
 
             if (response.ok) {
                 // Remove from local games list
-                const updatedGames = games.filter(g => g.id !== gameId);
+                const updatedGames = games.filter((g) => g.id !== gameId);
                 saveGames(updatedGames);
                 onGameEnd();
             } else {
@@ -105,7 +105,8 @@ export function ActiveGame({
                             <button
                                 type="button"
                                 onClick={(e) => {
-                                    const input = e.target.parentElement.querySelector('.score-input');
+                                    const input =
+                                        e.target.parentElement.querySelector('.score-input');
                                     handleScoreChange(player.username, 'subtract', input);
                                 }}
                                 className="btn btn-sm btn-danger"
@@ -121,7 +122,8 @@ export function ActiveGame({
                             <button
                                 type="button"
                                 onClick={(e) => {
-                                    const input = e.target.parentElement.querySelector('.score-input');
+                                    const input =
+                                        e.target.parentElement.querySelector('.score-input');
                                     handleScoreChange(player.username, 'add', input);
                                 }}
                                 className="btn btn-sm btn-success"
@@ -133,11 +135,7 @@ export function ActiveGame({
                 ))}
             </div>
             <br />
-            <button
-                type="button"
-                onClick={handleEndGame}
-                className="btn btn-primary"
-            >
+            <button type="button" onClick={handleEndGame} className="btn btn-primary">
                 End Game
             </button>
             {message && <div className="alert alert-info">{message}</div>}

@@ -1,29 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import './friends.css';
+import { Notifier, NotificationEvent } from './notifier';
 
 export function FriendRequestsView({ currentUser, onFriendAccepted }) {
     const [requests, setRequests] = useState([]);
 
-        useEffect(() => {
-            fetch('/api/friendRequests')
+    const fetchRequests = () => {
+        fetch('/api/friendRequests')
             .then((response) => response.json())
             .then((friends) => {
                 setRequests(friends);
             });
-        }, [onFriendAccepted]);
+    };
+
+    useEffect(() => {
+        fetchRequests();
+
+        const handleNotification = (event) => {
+            if (
+                event.type === NotificationEvent.FriendRequest &&
+                event.data.recipientUsername === currentUser.username
+            ) {
+                fetchRequests();
+            }
+        };
+
+        Notifier.addHandler(handleNotification);
+
+        return () => {
+            Notifier.removeHandler(handleNotification);
+        };
+    }, [currentUser.username]);
+
+    useEffect(() => {
+        fetchRequests();
+    }, [onFriendAccepted]);
 
     const acceptFriendRequest = async (request) => {
         const response = await fetch('/api/acceptFriendRequest', {
             method: 'POST',
             body: JSON.stringify({
-                    request: request,
+                request: request,
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         });
         if (response?.status === 200) {
+            fetchRequests();
             if (onFriendAccepted) onFriendAccepted();
+            Notifier.broadcastEvent(NotificationEvent.FriendAccepted, {
+                senderUsername: request.senderUsername,
+                acceptedBy: currentUser.username,
+                acceptedByName: currentUser.name,
+            });
         }
         console.log(response);
     };
@@ -32,12 +62,15 @@ export function FriendRequestsView({ currentUser, onFriendAccepted }) {
         const response = await fetch('/api/rejectFriendRequest', {
             method: 'POST',
             body: JSON.stringify({
-                    request: request,
+                request: request,
             }),
             headers: {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         });
+        if (response?.status === 200) {
+            fetchRequests();
+        }
         console.log(response);
     };
 

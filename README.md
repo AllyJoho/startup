@@ -104,21 +104,20 @@ To be honest I got really sick so I did do enough to get full credit, but I didn
 - [x] **Frontend calls service endpoints** - Mock functionality removed for users and friends.
 - [x] **Supports registration, login, logout, and restricted endpoint** - Fully support authentication and restrict access to player information, and authorizes for the friend functions.
 
-
 ## 🚀 DB deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 So same for this I wasn't able to do a lot so I did enough
 
-- [ ] **Stores data in MongoDB** - All player data is in the database, and I moved the friends information out there to make friend requests and stuff easier.
-- [ ] **Stores credentials in MongoDB** - Logging in and out and everything works great and is through the database.
+- [x] **Stores data in MongoDB** - All player data is in the database, and I moved the friends information out there to make friend requests and stuff easier.
+- [x] **Stores credentials in MongoDB** - Logging in and out and everything works great and is through the database.
 
 ## 🚀 WebSocket deliverable
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [ ] **Backend listens for WebSocket connection** - Backend webSocket management executed in `service/peerProxy.js`.
+- [ ] **Frontend makes WebSocket connection** - Frontend webSocket management executed in `src/friends/notifier.js`.
+- [ ] **Data sent over WebSocket connection** - JSON representation of friend request.
+- [ ] **WebSocket data displayed** - friend requests popped up on other end
+- [ ] **Application is fully functional** - I'm stressed but it does what it does. It's been changed from the original concept but still follows guidelines.

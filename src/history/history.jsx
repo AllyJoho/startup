@@ -27,7 +27,6 @@ export function History({ currentUser }) {
         fetchGames();
     }, []);
 
-
     return (
         <main className="views">
             <div>
@@ -41,9 +40,11 @@ export function History({ currentUser }) {
                     <p>No finished games yet. Play some games to see your history!</p>
                 ) : (
                     finishedGames.map((game) => {
-                        const gameDate = game.completedDate ? new Date(game.completedDate).toLocaleDateString() : 'Date unknown';
-                        const winnerPlayer = game.players.find(p => p.username === game.winner);
-                        
+                        const gameDate = game.completedDate
+                            ? new Date(game.completedDate).toLocaleDateString()
+                            : 'Date unknown';
+                        const winnerPlayer = game.players.find((p) => p.username === game.winner);
+
                         const sortedPlayers = [...game.players].sort((a, b) => {
                             if (game.scoreType === 'low') {
                                 return a.score - b.score;
@@ -56,7 +57,9 @@ export function History({ currentUser }) {
                             <div key={game.id} className="gameHistory">
                                 <h3>{game.name}</h3>
                                 <p className="game-date">{gameDate}</p>
-                                <span className="winner">{winnerPlayer?.name || 'Unknown'} WON!</span>
+                                <span className="winner">
+                                    {winnerPlayer?.name || 'Unknown'} WON!
+                                </span>
                                 <h5>Final Scores:</h5>
                                 <ol className="rank">
                                     {sortedPlayers.map((player) => (

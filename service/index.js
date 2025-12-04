@@ -5,6 +5,7 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
 const DB = require('./database.js');
+const { peerProxy } = require('./peerProxy.js');
 
 const authCookieName = 'token';
 
@@ -113,7 +114,11 @@ apiRouter.post('/sendFriendRequest', verifyAuth, async (req, res) => {
         return res.status(400).send({ msg: 'Cannot add yourself as a friend' });
     }
 
-    if (currentUser.friends.some(f => (typeof f === 'string' ? f === username : f.username === username))) {
+    if (
+        currentUser.friends.some((f) =>
+            typeof f === 'string' ? f === username : f.username === username
+        )
+    ) {
         return res.status(400).send({ msg: 'Already friends' });
     }
 
@@ -152,7 +157,7 @@ apiRouter.post('/acceptFriendRequest', verifyAuth, async (req, res) => {
     }
 
     // Check if they're already friends
-    const alreadyFriends = currentUser.friends.some(f => f.username === friendUser.username);
+    const alreadyFriends = currentUser.friends.some((f) => f.username === friendUser.username);
     if (alreadyFriends) {
         // Remove the friend request anyway and return success
         await DB.removeFriendRequest(request.senderUsername, currentUser.username);
@@ -279,10 +284,10 @@ async function createUser(name, username, password, age) {
 async function findUser(field, value) {
     if (!value) return null;
 
-  if (field === 'token') {
-    return DB.getUserByToken(value);
-  }
-  return DB.getUser(value);
+    if (field === 'token') {
+        return DB.getUserByToken(value);
+    }
+    return DB.getUser(value);
 }
 
 // setAuthCookie in the HTTP response
@@ -296,6 +301,7 @@ function setAuthCookie(res, authToken) {
     });
 }
 
-app.listen(port, () => {
+const httpService = app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+peerProxy(httpService);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './friends.css';
+import { Notifier, NotificationEvent } from './notifier';
 
 export function AddFriendView({ currentUser }) {
     const [username, setUsername] = useState('');
@@ -15,6 +16,12 @@ export function AddFriendView({ currentUser }) {
         });
         if (response?.status === 200) {
             setMessage('Friend request sent!');
+            const friendRequest = await response.json();
+            Notifier.broadcastEvent(NotificationEvent.FriendRequest, {
+                recipientUsername: username,
+                senderUsername: currentUser.username,
+                senderName: currentUser.name,
+            });
         } else {
             const body = await response.json();
             setMessage(body.msg);
